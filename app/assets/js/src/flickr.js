@@ -49,6 +49,8 @@
 
     _.search = function( keywords, page ) {
 
+        elements.grid.innerHTML = '';
+
         var method = 'flickr.photos.search';
         
         if ( typeof page === "undefined" ) {
@@ -62,18 +64,42 @@
                 images = [];
 
             for ( var i = 0; i < photos.length; i++ ) {
-                var griditem = "";
-                
+                var griditem = document.createElement('div');
+                griditem.className = 'item';
+
                 images[i] = new Image();
 
                 // URL format deets can be found here: http://www.flickr.com/services/api/misc.urls.html
-                images[i].src = 'http://farm' + photos[i].farm + '.staticflickr.com/' + photos[i].server + '/' + photos[i].id + '_' + photos[i].secret + '.jpg';
-                elements.grid.appendChild( images[i] );
+                images[i].src = 'http://farm' + photos[i].farm + '.staticflickr.com/' + photos[i].server + '/' + photos[i].id + '_' + photos[i].secret + '_' + ( i === 0 ? 'q' : 'q' ) + '.jpg';
+                images[i].className = "loading";
+                // if ( i === 0 ) {
+                //     elements.masthead.appendChild( images[i] );
+                // } else {
+                    griditem.appendChild(images[i]);
+                    elements.grid.appendChild( griditem );    
+                // }
+                
             }
 
             return response;
         });
 
+    };
+
+
+    // _.buildImage = function( opts ) {
+
+    //     var defaults = {};
+
+    //     var options = _.extend
+    // }
+
+
+    _.extend = function(obj, ext) {
+        for ( var prop in ext ) {
+            obj[prop] = (obj.hasOwnProperty(prop)) ? obj[prop] : ext[prop];
+        }
+        return obj;
     };
 
 
@@ -115,13 +141,6 @@
     };
 
 
-    _.init = function() {
-        elements.grid = _.select('.flickr-grid');
-        console.log( elements.grid );
-        return FlickrBot;
-    };
-
-
     // Adds an event listener - returns the appropriate function depending 
     // on whether it supports addEventListener ( or if it's IE )
     _.listen = (function() {
@@ -135,6 +154,29 @@
             };
         }
     })();
+
+
+    _.init = function() {
+
+
+        elements.grid = _.select('.flickr-grid');
+        elements.masthead = _.select('.flickr-masthead');
+
+        elements.searchfield = _.select('.flickr-search');
+
+        _.listen( elements.searchfield, 'keydown', function(e) {
+            
+            e.which = e.which || e.keyCode;
+
+            if( e.which == 13 ) {
+                console.log( 'searching for ' + elements.searchfield.value );
+                _.search( elements.searchfield.value );
+            }
+
+        });
+
+        return FlickrBot;
+    };
 
 
     var FlickrBot = function() {
@@ -153,5 +195,5 @@
 
 
 window.onload = function() {
-    FlickrBot.init().search( 'dachshund', 1 );
+    FlickrBot.init().search( 'dachshund', 3 );
 };

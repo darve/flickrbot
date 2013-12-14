@@ -121,15 +121,31 @@ h1 {
 header {
   display: block;
   position: relative;
+  max-width: 1080px;
   width: 100%;
   background: #f9672c;
   color: #fff;
   padding: 30px 0;
-  margin: 0 0 30px 0;
+  margin: 30px auto;
+}
+/* line 21, ../../../scss/partials/_global.scss */
+header input[type=text] {
+  border: none;
+  outline: none;
+  padding: 4px;
+  margin: 0;
+  position: absolute;
+  color: #333;
+  width: 220px;
+  height: 32px;
+  right: 20px;
+  margin: auto;
+  top: 0px;
+  bottom: 0px;
 }
 
-/* line 21, ../../../scss/partials/_global.scss */
-#wrapper {
+/* line 37, ../../../scss/partials/_global.scss */
+.full-width {
   display: block;
   position: relative;
   width: 100%;
@@ -137,10 +153,45 @@ header {
   margin: 0 auto;
 }
 
-/* line 33, ../../../scss/partials/_global.scss */
-.flickr-grid img {
+/* line 47, ../../../scss/partials/_global.scss */
+.flickr-masthead {
+  height: 320px;
+  margin: 0 0 30px 0;
+  overflow: hidden;
+}
+/* line 53, ../../../scss/partials/_global.scss */
+.flickr-masthead img {
+  display: block;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+/* line 70, ../../../scss/partials/_global.scss */
+.flickr-grid .item {
+  width: 20%;
   position: relative;
-  width: 120px;
+  float: left;
+}
+/* line 74, ../../../scss/partials/_global.scss */
+.flickr-grid .item:before {
+  content: "";
+  display: block;
+  padding-top: 100%;
+  /* initial ratio of 1:1*/
+  background: #f9672c url('../img/loader.gif?1387058518') center center no-repeat;
+  background-size: 32px auto;
+}
+/* line 83, ../../../scss/partials/_global.scss */
+.flickr-grid img {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
 }
 
 @media screen and (max-width: 767px) {

@@ -9,16 +9,32 @@
 header {
 	display: block;
 	position: relative;
+	max-width: 1080px;
 	width: 100%;
 
 	background: $orange;
 	color: #fff;
 
 	padding: 30px 0;
-	margin: 0 0 30px 0;
+	margin: 30px auto;
+
+	input[type=text] {
+		border: none;
+		outline: none;
+		padding: 4px;
+		margin: 0;
+		position: absolute;
+		color: #333;
+		width: 220px;
+		height: 32px;
+		right: 20px;
+		margin: auto;
+		top: 0px;
+		bottom: 0px;
+	}
 }
 
-#wrapper {
+.full-width {
 	display: block;
 	position: relative;
 
@@ -28,11 +44,50 @@ header {
 	margin: 0 auto;
 }
 
-.flickr-grid {
+.flickr-masthead {
+	height: 320px;
+	margin: 0 0 30px 0;
+
+	overflow: hidden;
 
 	img {
-		position: relative;
+		display: block;
+		position: absolute;
 
-		width: 120px;
+		width: 100%;
+
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+
+		margin: auto;
+	}
+}
+
+.flickr-grid {
+
+	.item {
+		width: 20%;
+		position: relative;
+		float: left;
+		&:before {
+			content: "";
+			display: block;
+			padding-top: 100%; 	/* initial ratio of 1:1*/			
+			background: $orange image-url('loader.gif') center center no-repeat;
+			background-size: 32px auto;
+		}
+	}
+
+	img {
+		position: absolute;
+		width: 100%;
+		left: 0;
+		top: 0;
+
+		// &.loading {
+		// 	background: $orange image-url('loader.gif') center center no-repeat;
+		// }
 	}
 }
