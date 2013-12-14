@@ -1,13 +1,37 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js ie lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js ie lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-jsie lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <htmllang="en"> <!--<![endif]-->
 <head>
+
+  <!--[if lt IE 9]>
+    <script type="text/javascript">
+      document.createElement('header');
+      document.createElement('nav');
+      document.createElement('footer');
+      document.createElement('section');
+      document.createElement('article');
+    </script>
+    <![endif]-->
+
 	<meta charset="UTF-8">
-	<title>Boilerplate</title>
+	<title>Dave's Flickr Bot</title>
+	<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
 	
-	<div id="wrapper"></div>
+	<header>
+		<h1 class="f-bold f-uppercase">Dave's Flickr Bot</h1>
+	</header>
+	<div id="wrapper">
+		<div class="flickr-masthead"></div>
+		<div class="flickr-direction-paving"></div>
+		<div class="flickr-number-paging"></div>
+		<div class="flickr-grid"></div>
+	</div>
+	<footer></footer>
 	
 	<!-- App scripts::PROD -->
 	<!-- <script src="assets/js/prodmain.min.js"></script> -->
