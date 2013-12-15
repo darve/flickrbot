@@ -1,3 +1,18 @@
 
 /* 	Mobile styles, yeah?
 /* ======================================= */
+
+header {
+	
+	h1 {
+		text-align: center;
+		display: block;
+	}
+
+	input[type=text] {
+		display: block;
+		position: relative;
+		right: 0;
+		margin: 12px auto;
+	}
+}

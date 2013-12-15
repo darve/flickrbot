@@ -65,6 +65,14 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 
 /* 	Base styles, yeah?
 /* ======================================= */
+/* line 7, ../../../scss/partials/_base.scss */
+.clear {
+  height: 0px;
+  clear: both;
+  overflow: hidden;
+  display: block;
+}
+
 /* 	Fonts and that, yeah?
 /* ======================================= */
 /* line 5, ../../../scss/partials/_typography.scss */
@@ -176,8 +184,9 @@ header input[type=text] {
   width: 20%;
   position: relative;
   float: left;
+  cursor: pointer;
 }
-/* line 74, ../../../scss/partials/_global.scss */
+/* line 76, ../../../scss/partials/_global.scss */
 .flickr-grid .item:before {
   content: "";
   display: block;
@@ -186,7 +195,7 @@ header input[type=text] {
   background: #f9672c url('../img/loader.gif?1387058518') center center no-repeat;
   background-size: 32px auto;
 }
-/* line 83, ../../../scss/partials/_global.scss */
+/* line 85, ../../../scss/partials/_global.scss */
 .flickr-grid img {
   position: absolute;
   width: 100%;
@@ -194,13 +203,94 @@ header input[type=text] {
   top: 0;
 }
 
+/* line 97, ../../../scss/partials/_global.scss */
+#lightbox {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  display: none;
+  background: #000;
+  background: rgba(0, 0, 0, 0.5);
+}
+/* line 108, ../../../scss/partials/_global.scss */
+#lightbox.visible {
+  display: block;
+}
+/* line 112, ../../../scss/partials/_global.scss */
+#lightbox img {
+  display: block;
+  max-width: 80%;
+  max-height: 80%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  -webkit-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4);
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4);
+  background: #f9672c url('../img/loader.gif?1387058518') center center no-repeat;
+  background-size: 32px auto;
+}
+
+/* line 130, ../../../scss/partials/_global.scss */
+footer {
+  display: block;
+  position: relative;
+  max-width: 1080px;
+  width: 100%;
+  background: #f9672c;
+  color: #fff;
+  padding: 30px 0;
+  margin: 30px auto;
+}
+/* line 142, ../../../scss/partials/_global.scss */
+footer p {
+  text-align: center;
+  font-size: 14px;
+}
+/* line 146, ../../../scss/partials/_global.scss */
+footer p a {
+  color: #fff;
+  text-decoration: none;
+  -webkit-transition: color 0.1s ease-out;
+  -moz-transition: color 0.1s ease-out;
+  -o-transition: color 0.1s ease-out;
+  transition: color 0.1s ease-out;
+}
+/* line 151, ../../../scss/partials/_global.scss */
+footer p a:hover, footer p a:active, footer p a:focus {
+  text-decoration: none;
+  color: black;
+}
+
 @media screen and (max-width: 767px) {
   /* 	Mobile styles, yeah?
   /* ======================================= */
+  /* line 7, ../../../scss/partials/_mobile.scss */
+  header h1 {
+    text-align: center;
+    display: block;
+  }
+  /* line 12, ../../../scss/partials/_mobile.scss */
+  header input[type=text] {
+    display: block;
+    position: relative;
+    right: 0;
+    margin: 12px auto;
+  }
 }
-@media screen and (max-width: 959px) {
+@media screen and (min-width: 768px) and (max-width: 959px) {
   /* 	Tablet styles, yeah?
   /* ======================================= */
+  /* line 7, ../../../scss/partials/_tablet.scss */
+  header h1 {
+    text-align: left;
+    padding-left: 20px;
+  }
 }
 @media screen and (min-width: 960px) {
   /* 	Desktop styles, yeah?

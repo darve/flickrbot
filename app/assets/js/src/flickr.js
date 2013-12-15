@@ -8,17 +8,18 @@
 
 
     var _ = {},
-        api_key = "5e0c3a5a074554ab8740d758e7384a3a",
-        secret = "80e37ce5945edef8",
+        api_key = '5e0c3a5a074554ab8740d758e7384a3a',
+        secret = '80e37ce5945edef8',
         RESTurl = 'http://api.flickr.com/services/rest/?api_key=' + api_key,
-        elements = {};
+        elements = {},
+        images = [];
 
 
     /* Public methods
     /* =============================== */
 
     // Basic ajax GET function
-    _.get = function( url, callback ) {
+    _.get = function(url, callback) {
     
         var xhr = new XMLHttpRequest();
         
@@ -31,7 +32,7 @@
             
             // Error code recieved from the server
             if(xhr.status !== 200) {
-                console.log( 'The request was made, but it was not good.' );
+                console.log('The request was made, but it was not good.');
                 return;
             }
 
@@ -47,9 +48,14 @@
     };
 
 
-    _.search = function( keywords, page ) {
+    _.search = function(keywords, page) {
 
         elements.grid.innerHTML = '';
+        // if ( images.length === 0 ) {
+        //     for ( var i = 0, l = images.length; i < l; i++ ) {
+        //         images[i].src = '';
+        //     }
+        // }
 
         var method = 'flickr.photos.search';
         
@@ -57,27 +63,39 @@
             page = 1;
         }
 
-        _.get( RESTurl + '&method=' + method + '&tags=' + keywords + '&page=' + page + '&format=json&nojsoncallback=1', function( res ){      
+        _.get( RESTurl + '&method=' + method + '&tags=' + keywords + '&page=' + page + '&format=json&nojsoncallback=1&per_page=10', function(res){      
             
             var response = JSON.parse( res.response ),
-                photos = response.photos.photo,
-                images = [];
+                photos = response.photos.photo;
 
             for ( var i = 0; i < photos.length; i++ ) {
-                var griditem = document.createElement('div');
+
+                var griditem = d.createElement('div');
                 griditem.className = 'item';
 
+                // if ( typeof images[i] === 'undefined' ) {
                 images[i] = new Image();
+                // }
 
                 // URL format deets can be found here: http://www.flickr.com/services/api/misc.urls.html
-                images[i].src = 'http://farm' + photos[i].farm + '.staticflickr.com/' + photos[i].server + '/' + photos[i].id + '_' + photos[i].secret + '_' + ( i === 0 ? 'q' : 'q' ) + '.jpg';
-                images[i].className = "loading";
-                // if ( i === 0 ) {
-                //     elements.masthead.appendChild( images[i] );
-                // } else {
-                    griditem.appendChild(images[i]);
-                    elements.grid.appendChild( griditem );    
-                // }
+                var url = 'http://farm' + photos[i].farm + '.staticflickr.com/' + photos[i].server + '/' + photos[i].id + '_' + photos[i].secret + '_';
+
+                images[i].src = url + ( i === 0 ? 'q' : 'q' ) + '.jpg';
+                images[i].dataset.lightbox = url + 'b.jpg';
+                images[i].className = 'loading';
+
+                griditem.appendChild(images[i]);
+                elements.grid.appendChild(griditem);
+
+                _.listen( images[i], 'click', function(e) {
+                    var img = new Image();
+                    img.src = this.dataset.lightbox;
+                    img.className = 'lightbox';
+
+                    elements.lightbox.innerHTML = '';
+                    elements.lightbox.appendChild(img);
+                    elements.lightbox.className = 'visible';
+                });
                 
             }
 
@@ -158,11 +176,14 @@
 
     _.init = function() {
 
-
         elements.grid = _.select('.flickr-grid');
         elements.masthead = _.select('.flickr-masthead');
-
+        elements.lightbox = _.select('#lightbox');
         elements.searchfield = _.select('.flickr-search');
+
+        _.listen( elements.lightbox, 'click', function(e) {
+            elements.lightbox.className = '';
+        });
 
         _.listen( elements.searchfield, 'keydown', function(e) {
             

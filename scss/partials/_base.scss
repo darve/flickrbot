@@ -3,3 +3,10 @@
 /* ======================================= */
 
 $orange: #f9672c;
+
+.clear {
+	height: 0px;
+	clear: both;
+	overflow: hidden;
+	display: block;
+}
