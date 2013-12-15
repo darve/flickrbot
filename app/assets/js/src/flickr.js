@@ -50,12 +50,12 @@
 
     _.search = function(keywords, page) {
 
-        elements.grid.innerHTML = '';
-        // if ( images.length === 0 ) {
-        //     for ( var i = 0, l = images.length; i < l; i++ ) {
-        //         images[i].src = '';
-        //     }
-        // }
+        // elements.grid.innerHTML = '';
+        if ( images.length !== 0 ) {
+            for ( var i = 0, l = images.length; i < l; i++ ) {
+                images[i].src = 'assets/img/trans.png';
+            }
+        }
 
         var method = 'flickr.photos.search';
         
@@ -63,29 +63,32 @@
             page = 1;
         }
 
-        _.get( RESTurl + '&method=' + method + '&tags=' + keywords + '&page=' + page + '&format=json&nojsoncallback=1&per_page=10', function(res){      
+        _.get( RESTurl + '&method=' + method + '&tags=' + keywords + '&page=' + page + '&format=json&nojsoncallback=1&per_page=20', function(res){      
             
             var response = JSON.parse( res.response ),
                 photos = response.photos.photo;
 
             for ( var i = 0; i < photos.length; i++ ) {
 
-                var griditem = d.createElement('div');
-                griditem.className = 'item';
-
-                // if ( typeof images[i] === 'undefined' ) {
-                images[i] = new Image();
-                // }
-
                 // URL format deets can be found here: http://www.flickr.com/services/api/misc.urls.html
                 var url = 'http://farm' + photos[i].farm + '.staticflickr.com/' + photos[i].server + '/' + photos[i].id + '_' + photos[i].secret + '_';
 
-                images[i].src = url + ( i === 0 ? 'q' : 'q' ) + '.jpg';
-                images[i].dataset.lightbox = url + 'b.jpg';
-                images[i].className = 'loading';
+                if ( typeof images[i] === 'undefined' ) {
+                    images[i] = new Image();
+                    var griditem = d.createElement('div');
+                    griditem.className = 'item';
 
-                griditem.appendChild(images[i]);
-                elements.grid.appendChild(griditem);
+                    images[i].src = url + ( i === 0 ? 'q' : 'q' ) + '.jpg';
+                    images[i].dataset.lightbox = url + 'b.jpg';
+                    images[i].className = 'loading';
+
+                    griditem.appendChild(images[i]);
+                    elements.grid.appendChild(griditem);
+                } else {
+                    images[i].src = url + ( i === 0 ? 'q' : 'q' ) + '.jpg';
+                    images[i].dataset.lightbox = url + 'b.jpg';
+                    images[i].className = 'loading';
+                }
 
                 _.listen( images[i], 'click', function(e) {
                     var img = new Image();
