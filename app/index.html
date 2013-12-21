@@ -4,7 +4,6 @@
 <!--[if IE 8]>         <html class="no-jsie lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <htmllang="en"> <!--<![endif]-->
 <head>
-
   <!--[if lt IE 9]>
     <script type="text/javascript">
       document.createElement('header');
@@ -14,7 +13,6 @@
       document.createElement('article');
     </script>
     <![endif]-->
-
 	<meta charset="UTF-8">
 	<title>Dave's Flickr Bot</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
@@ -29,9 +27,11 @@
 	</header>
 
 	<div id="wrapper" class="full-width">
-		<!-- <div class="flickr-masthead full-width"></div> -->
 		<div class="flickr-direction-paging"></div>
-		<div class="flickr-number-paging"></div>
+		<div class="flickr-number-paging">
+			<a href="#" class="left"></a>
+			<a href="#" class="right"></a>
+		</div>
 		<div class="flickr-grid full-width"></div>
 	</div>
 
@@ -45,9 +45,8 @@
 
 	<!-- App scripts::PROD -->
 	<!-- <script src="assets/js/prodmain.min.js"></script> -->
-
 	<!-- App scripts::DEV -->
 	<script src="assets/js/src/flickr.js"></script>
-
+	
 </body>
 </html>

@@ -15,10 +15,47 @@
         images = [];
 
 
-    /* Public methods
-    /* =============================== */
+    var settings = {
+        photos_per_page: 40
+    };
 
-    // Basic ajax GET function
+
+    var FlickrBot = function() {
+        return FlickrBot;
+    };
+
+    
+    // Initialise the twitter bot
+    // 1. Cache all of the elements that make up the bot
+    // 2. Add some event listeners for searching and paging etc
+    // 3. Set status to READY
+    _.init = function() {
+
+        // Cache our elements
+        elements.grid = _.select('.flickr-grid');
+        elements.masthead = _.select('.flickr-masthead');
+        elements.lightbox = _.select('#lightbox');
+        elements.searchfield = _.select('.flickr-search');
+
+        // Listen for lightbox clicks ( closes the lightbox )
+        _.listen( elements.lightbox, 'click', function(e) {
+            elements.lightbox.className = '';
+        });
+
+        // Listen for search input
+        _.listen( elements.searchfield, 'keydown', function(e) {
+            e.which = e.which || e.keyCode;
+            if( e.which == 13 ) {
+                _.search( elements.searchfield.value );
+            }
+        });
+
+        return FlickrBot;
+    };
+
+
+    // Basic ajax GET function.  @TODO: use a promise here rather than 
+    // a simple callback
     _.get = function(url, callback) {
     
         var xhr = new XMLHttpRequest();
@@ -26,18 +63,18 @@
         function checkStatus() {
 
             // checkStatus was called, but the request isn't complete yet
-            if(xhr.readyState < 4) {
+            if (xhr.readyState < 4) {
                 return;
             }
             
             // Error code recieved from the server
-            if(xhr.status !== 200) {
+            if (xhr.status !== 200) {
                 console.log('The request was made, but it was not good.');
                 return;
             }
 
             // Request is good, lets do this
-            if(xhr.readyState === 4) {
+            if (xhr.readyState === 4) {
                 callback(xhr);
             }           
         }
@@ -50,20 +87,21 @@
 
     _.search = function(keywords, page) {
 
-        // elements.grid.innerHTML = '';
+        // If the grid already contains image elements, reset their 
+        // src attribute so we can see the loading state.
         if ( images.length !== 0 ) {
             for ( var i = 0, l = images.length; i < l; i++ ) {
                 images[i].src = 'assets/img/trans.png';
             }
         }
 
-        var method = 'flickr.photos.search';
-        
         if ( typeof page === "undefined" ) {
             page = 1;
         }
 
-        _.get( RESTurl + '&method=' + method + '&tags=' + keywords + '&page=' + page + '&format=json&nojsoncallback=1&per_page=20', function(res){      
+        var method = 'flickr.photos.search';        
+
+        _.get( RESTurl + '&method=' + method + '&tags=' + keywords + '&page=' + page + '&format=json&nojsoncallback=1&per_page=80', function(res){      
             
             var response = JSON.parse( res.response ),
                 photos = response.photos.photo;
@@ -74,46 +112,50 @@
                 var url = 'http://farm' + photos[i].farm + '.staticflickr.com/' + photos[i].server + '/' + photos[i].id + '_' + photos[i].secret + '_';
 
                 if ( typeof images[i] === 'undefined' ) {
+                    // Create a new image element, give it a source ( thumbnail type ),
+                    // give it a data attribute of the fullsize image source and then
+                    // add a 'loading' class.
                     images[i] = new Image();
-                    var griditem = d.createElement('div');
-                    griditem.className = 'item';
-
                     images[i].src = url + ( i === 0 ? 'q' : 'q' ) + '.jpg';
                     images[i].dataset.lightbox = url + 'b.jpg';
                     images[i].className = 'loading';
 
+                    // Create a div element we can use to wrap the image, for layout 
+                    // purposes
+                    var griditem = d.createElement('div');
+                    griditem.className = 'item';
                     griditem.appendChild(images[i]);
                     elements.grid.appendChild(griditem);
+
+                    // Because we are creating new image elements, we need to add a 
+                    // click listener to each one to fire off the lightbox.
+                    _.listen( images[i], 'click', function(e) {
+                        var img = new Image();
+                        img.src = this.dataset.lightbox;
+                        img.className = 'lightbox';
+
+                        elements.lightbox.innerHTML = '';
+                        elements.lightbox.appendChild(img);
+                        elements.lightbox.className = 'visible';
+                    });
                 } else {
+                    // No need to create new image elements, so just update the source
                     images[i].src = url + ( i === 0 ? 'q' : 'q' ) + '.jpg';
                     images[i].dataset.lightbox = url + 'b.jpg';
                     images[i].className = 'loading';
                 }
-
-                _.listen( images[i], 'click', function(e) {
-                    var img = new Image();
-                    img.src = this.dataset.lightbox;
-                    img.className = 'lightbox';
-
-                    elements.lightbox.innerHTML = '';
-                    elements.lightbox.appendChild(img);
-                    elements.lightbox.className = 'visible';
-                });
                 
             }
 
-            return response;
+            return FlickrBot;
         });
 
     };
 
 
-    // _.buildImage = function( opts ) {
+    _.buildGrid = function() {
 
-    //     var defaults = {};
-
-    //     var options = _.extend
-    // }
+    };
 
 
     _.extend = function(obj, ext) {
@@ -177,36 +219,6 @@
     })();
 
 
-    _.init = function() {
-
-        elements.grid = _.select('.flickr-grid');
-        elements.masthead = _.select('.flickr-masthead');
-        elements.lightbox = _.select('#lightbox');
-        elements.searchfield = _.select('.flickr-search');
-
-        _.listen( elements.lightbox, 'click', function(e) {
-            elements.lightbox.className = '';
-        });
-
-        _.listen( elements.searchfield, 'keydown', function(e) {
-            
-            e.which = e.which || e.keyCode;
-
-            if( e.which == 13 ) {
-                console.log( 'searching for ' + elements.searchfield.value );
-                _.search( elements.searchfield.value );
-            }
-
-        });
-
-        return FlickrBot;
-    };
-
-
-    var FlickrBot = function() {
-        return FlickrBot;
-    };
-
     // Expose public methods
     FlickrBot.init = _.init;
     FlickrBot.search = _.search;
@@ -217,7 +229,6 @@
 
 })(window, document);
 
-
 window.onload = function() {
-    FlickrBot.init().search( 'dachshund', 3 );
+    FlickrBot.init().search( 'coheed', 3 );
 };

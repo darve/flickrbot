@@ -134,7 +134,7 @@ header {
   background: #f9672c;
   color: #fff;
   padding: 30px 0;
-  margin: 30px auto;
+  margin: 0px auto 30px auto;
 }
 /* line 21, ../../../scss/partials/_global.scss */
 header input[type=text] {
@@ -150,9 +150,14 @@ header input[type=text] {
   margin: auto;
   top: 0px;
   bottom: 0px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -ms-border-radius: 0px;
+  -o-border-radius: 0px;
+  border-radius: 0px;
 }
 
-/* line 37, ../../../scss/partials/_global.scss */
+/* line 39, ../../../scss/partials/_global.scss */
 .full-width {
   display: block;
   position: relative;
@@ -161,13 +166,13 @@ header input[type=text] {
   margin: 0 auto;
 }
 
-/* line 47, ../../../scss/partials/_global.scss */
+/* line 49, ../../../scss/partials/_global.scss */
 .flickr-masthead {
   height: 320px;
   margin: 0 0 30px 0;
   overflow: hidden;
 }
-/* line 53, ../../../scss/partials/_global.scss */
+/* line 55, ../../../scss/partials/_global.scss */
 .flickr-masthead img {
   display: block;
   position: absolute;
@@ -179,14 +184,14 @@ header input[type=text] {
   margin: auto;
 }
 
-/* line 70, ../../../scss/partials/_global.scss */
+/* line 72, ../../../scss/partials/_global.scss */
 .flickr-grid .item {
   width: 20%;
   position: relative;
   float: left;
   cursor: pointer;
 }
-/* line 76, ../../../scss/partials/_global.scss */
+/* line 78, ../../../scss/partials/_global.scss */
 .flickr-grid .item:before {
   content: "";
   display: block;
@@ -195,7 +200,7 @@ header input[type=text] {
   background: #f9672c url('../img/loader.gif?1387058518') center center no-repeat;
   background-size: 32px auto;
 }
-/* line 85, ../../../scss/partials/_global.scss */
+/* line 87, ../../../scss/partials/_global.scss */
 .flickr-grid img {
   position: absolute;
   width: 100%;
@@ -203,7 +208,7 @@ header input[type=text] {
   top: 0;
 }
 
-/* line 97, ../../../scss/partials/_global.scss */
+/* line 99, ../../../scss/partials/_global.scss */
 #lightbox {
   position: fixed;
   width: 100%;
@@ -214,15 +219,17 @@ header input[type=text] {
   background: #000;
   background: rgba(0, 0, 0, 0.5);
 }
-/* line 108, ../../../scss/partials/_global.scss */
+/* line 110, ../../../scss/partials/_global.scss */
 #lightbox.visible {
   display: block;
 }
-/* line 112, ../../../scss/partials/_global.scss */
+/* line 114, ../../../scss/partials/_global.scss */
 #lightbox img {
   display: block;
   max-width: 80%;
   max-height: 80%;
+  min-width: 60px;
+  min-height: 60px;
   position: absolute;
   left: 0;
   top: 0;
@@ -236,7 +243,7 @@ header input[type=text] {
   background-size: 32px auto;
 }
 
-/* line 130, ../../../scss/partials/_global.scss */
+/* line 135, ../../../scss/partials/_global.scss */
 footer {
   display: block;
   position: relative;
@@ -247,12 +254,12 @@ footer {
   padding: 30px 0;
   margin: 30px auto;
 }
-/* line 142, ../../../scss/partials/_global.scss */
+/* line 147, ../../../scss/partials/_global.scss */
 footer p {
   text-align: center;
   font-size: 14px;
 }
-/* line 146, ../../../scss/partials/_global.scss */
+/* line 151, ../../../scss/partials/_global.scss */
 footer p a {
   color: #fff;
   text-decoration: none;
@@ -261,7 +268,7 @@ footer p a {
   -o-transition: color 0.1s ease-out;
   transition: color 0.1s ease-out;
 }
-/* line 151, ../../../scss/partials/_global.scss */
+/* line 156, ../../../scss/partials/_global.scss */
 footer p a:hover, footer p a:active, footer p a:focus {
   text-decoration: none;
   color: black;
