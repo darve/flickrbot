@@ -6,6 +6,89 @@
 	@include box-sizing( border-box );
 }
 
+body, html {
+	position: relative;
+	display: block;
+	min-height: 100%;
+}
+
+#wrapper {
+	display: block;
+	min-height: 400px;
+	padding-bottom: 70px;
+}
+
+/*	Core Elements
+/* ======================================= */
+
+.flickr-loading-bar {
+	display: block;
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 0%;
+	height: 6px;
+	background: #2ecc71;
+	z-index: 999;
+	@include transition( width .3s ease-out );
+
+	&.show {
+		top: 0px;
+	}
+}
+
+.flickr-search-wrapper {
+	position: relative;
+	display: block;
+	width: 220px;
+	height: 32px;
+	
+	input[type=text] {
+		border: none;
+		outline: none;
+		padding: 4px;
+		color: #333;
+		width: 100%;
+		height: 100%;
+		display: block;
+		@include border-radius( 0px );
+	}
+
+	button {
+		display: block;
+		padding: 0;
+		margin: auto 0;
+		position: absolute;
+		right: 8px;
+		top: 0px;
+		bottom: 0px;
+		color: #7f8c8d;
+		font-size: 18px;
+		height: 18px;
+		outline: none;
+		border: none;
+		background: transparent;
+		cursor: pointer;
+		@include border-radius(0px);
+		@include transition( color .1s ease-out );
+
+		&:hover, &:active, &:focus {
+			color: $orange;
+		}
+	}
+}
+
+.full-width {
+	display: block;
+	position: relative;
+
+	width: 100%;
+	max-width: 1080px;
+
+	margin: 0 auto;
+}
+
+
 header {
 	display: block;
 	position: relative;
@@ -18,32 +101,13 @@ header {
 	padding: 30px 0;
 	margin: 0px auto 30px auto;
 
-	input[type=text] {
-		border: none;
-		outline: none;
-		padding: 4px;
-		margin: 0;
+	.flickr-search-wrapper {
 		position: absolute;
-		color: #333;
-		width: 220px;
-		height: 32px;
 		right: 20px;
 		margin: auto;
 		top: 0px;
 		bottom: 0px;
-
-		@include border-radius( 0px );
 	}
-}
-
-.full-width {
-	display: block;
-	position: relative;
-
-	width: 100%;
-	max-width: 1080px;
-
-	margin: 0 auto;
 }
 
 .flickr-masthead {
@@ -67,7 +131,22 @@ header {
 	}
 }
 
+
+
 .flickr-grid {
+	color: #555555;
+
+	h2 {
+		margin: 0 0 22px 0;
+	}
+	
+	.flickr-search-wrapper {
+		margin: 0 auto;
+		border: 1px solid #7f8c8d;
+
+		width: 300px;
+		height: 42px;
+	}
 
 	.item {
 		width: 20%;
@@ -89,10 +168,10 @@ header {
 		width: 100%;
 		left: 0;
 		top: 0;
-
-		// &.loading {
-		// 	background: $orange image-url('loader.gif') center center no-repeat;
-		// }
+		
+		&.hidden {
+			display: none;
+		}
 	}
 }
 
@@ -134,7 +213,10 @@ header {
 
 footer {
 	display: block;
-	position: relative;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
 	max-width: 1080px;
 	width: 100%;
 
@@ -154,6 +236,8 @@ footer {
 			@include transition( color .1s ease-out );
 
 			&:hover, &:active, &:focus {
+				border: none;
+				outline: none;
 				text-decoration: none;
 				color: black;
 			}

@@ -2,7 +2,7 @@
 <!--[if lt IE 7]>      <html class="no-js ie lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js ie lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-jsie lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <htmllang="en"> <!--<![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
 <head>
   <!--[if lt IE 9]>
     <script type="text/javascript">
@@ -23,7 +23,10 @@
 	
 	<header>
 		<h1 class="f-bold f-uppercase">Dave's Flickr Bot</h1>
-		<input type="text" placeholder="Search Flickr" class="f-normal f-uppercase flickr-search">
+		<div class="flickr-search-wrapper">
+			<input type="text" placeholder="Search Flickr" class="f-normal f-uppercase flickr-search" />
+			<button class="icon-search"></button>
+		</div>
 	</header>
 
 	<div id="wrapper" class="full-width">
@@ -32,7 +35,17 @@
 			<a href="#" class="left"></a>
 			<a href="#" class="right"></a>
 		</div>
-		<div class="flickr-grid full-width"></div>
+		<div class="flickr-grid full-width">
+			
+			<div class="flickr-placeholder-wrapper">
+				<h2 class="f-bold f-uppercase">Start searching flickr now!</h2>
+				<div class="flickr-search-wrapper">
+					<input type="text" placeholder="Search Flickr" class="f-normal f-uppercase flickr-search" />
+					<button class="icon-search"></button>
+				</div>	
+			</div>
+
+		</div>
 	</div>
 
 	<div class="clear"></div>
@@ -41,12 +54,25 @@
 		<p class="f-light f-uppercase">Made by <a href="http://darve.co.uk/" target="_blank">Darve</a></p>
 	</footer>
 	
-	<div id="lightbox"></div>
+	<div id="flickr-lightbox">
+		<a href="#" class="close-lightbox icon-close"></a>
+	</div>
+
+	<div class="flickr-loading-bar"></div>
 
 	<!-- App scripts::PROD -->
 	<!-- <script src="assets/js/prodmain.min.js"></script> -->
 	<!-- App scripts::DEV -->
 	<script src="assets/js/src/flickr.js"></script>
-	
+	<script>
+
+		// Pardon my use of window.onload here, it is only used to illustrate
+		// the flickrbot works
+		window.onload = function() {
+		    FlickrBot.init();
+		};
+
+	</script>
+
 </body>
 </html>
