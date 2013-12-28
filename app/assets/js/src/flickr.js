@@ -169,12 +169,6 @@
             start = 0;
         }
 
-        // Reset the src attributes of the grid images to show the
-        // loading animation
-        for ( var i = 0, l = photos.length; i < l; i++ ) {
-            photos[i].image.src = 'assets/img/trans.png';
-        }
-
         var len = ( arr.length < settings.photos_per_page ? arr.length : settings.photos_per_page );
 
         for ( var i = start; i < ( start + len ); i++ ) {
@@ -206,6 +200,12 @@
 
         searchterm = keywords;
         currentpage = page;
+
+        // Reset the src attributes of the grid images to show the
+        // loading animation
+        for ( var i = 0, l = settings.photos_per_page; i < l; i++ ) {
+            photos[i].image.src = 'assets/img/trans.png';
+        }
 
         _.get( RESTurl + '&method=' + method + '&tags=' + keywords + '&page=' + page + '&format=json&nojsoncallback=1&per_page=300', function( res ){      
             response = JSON.parse( res.response );
