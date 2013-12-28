@@ -9,7 +9,7 @@
     var _ = {},
         queries = {},
         elements = {},
-        images = [];
+        photos = [];
 
     // Caching our API credentials for ease.
     var api_key = '5e0c3a5a074554ab8740d758e7384a3a',
@@ -61,21 +61,8 @@
     };
 
 
-    // Simple extend function - iterates through all the properties of the second
-    // argument object and adds them / overwrites them on the first argument
-    _.extend = function(obj, ext) {
-
-        for (var prop in ext) {
-            obj[prop] = (obj.hasOwnProperty(prop)) ? obj[prop] : ext[prop];
-        }
-        
-        return obj;
-
-    };
-
-
-    // Basic ajax GET function.  @TODO: use a promise here rather than 
-    // a simple callback
+    // Basic ajax GET function.  @TODO: replace the callback
+    // with a promise
     _.get = function(url, callback) {
     
         var xhr = new XMLHttpRequest();
@@ -125,25 +112,27 @@
 
         for ( var i = 0, l = settings.photos_per_page; i < l; i++ ) {
 
+            photos[i] = {};
+
             // Create a new image element and give it a class
-            images[i] = new Image();
-            images[i].className = 'loading';
+            photos[i].image = new Image();
+            photos[i].image.className = 'loading';
 
             // Create the loaded event listener before we give the image a source
             // otherwise it will kick up a fuss in IE
-            images[i].onload = function(e) {
-                images[i].className = 'loaded';
+            photos[i].image.onload = function(e) {
+                _.addClass( this, 'loaded' );
             };
 
             // Create a div element we can use to wrap the image, for layout purposes
-            var griditem = d.createElement('div');
-            griditem.className = 'item';
-            griditem.appendChild(images[i]);
-            elements.grid.appendChild(griditem);
+            photos[i].wrapper = d.createElement('div');
+            photos[i].wrapper.className = 'item hidden';
+            photos[i].wrapper.appendChild(photos[i].image);
+            elements.grid.appendChild(photos[i].wrapper);
 
             // Because we are creating new image elements, we need to add a 
             // click listener to each one to fire off the lightbox.
-            _.listen( images[i], 'click', function(e) {
+            _.listen( photos[i].image, 'click', function(e) {
                 var img = new Image();
                 img.src = this.dataset.lightbox;
                 img.className = 'lightbox';
@@ -165,6 +154,32 @@
     }
 
 
+    _.updateGrid = function( arr ) {
+
+        // Reset the src attributes of the grid images to show the
+        // loading animation
+        for ( var i = 0, l = photos.length; i < l; i++ ) {
+            photos[i].image.src = 'assets/img/trans.png';
+        }
+
+        var len = ( arr.length < settings.photos_per_page ? arr.length : settings.photos_per_page );
+
+        for ( var i = 0; i < len; i++ ) {
+        
+            // Build the URL for this photo
+            // URL format details can be found here: http://www.flickr.com/services/api/misc.urls.html
+            var url = 'http://farm' + arr[i].farm + '.staticflickr.com/' + arr[i].server + '/' + arr[i].id + '_' + arr[i].secret + '_';
+            
+            photos[i].image.src = url + ( i === 0 ? 'q' : 'q' ) + '.jpg';
+            photos[i].image.dataset.lightbox = url + 'b.jpg';
+            photos[i].image.className = 'loading';
+            _.removeClass( photos[i].wrapper, 'hidden' );
+        
+        }
+
+    };
+
+
     _.search = function(keywords, page) {
 
         if ( typeof page === "undefined" ) {
@@ -173,7 +188,7 @@
 
         var method = 'flickr.photos.search';        
 
-        _.get( RESTurl + '&method=' + method + '&tags=' + keywords + '&page=' + page + '&format=json&nojsoncallback=1&per_page=80', function(res){      
+        _.get( RESTurl + '&method=' + method + '&tags=' + keywords + '&page=' + page + '&format=json&nojsoncallback=1&per_page=300', function(res){      
             
             var response = JSON.parse( res.response );
             queries[keywords] = response.photos.photo;
@@ -181,36 +196,6 @@
 
             return FlickrBot;
         });
-
-    };
-
-
-    _.updateGrid = function( photos ) {
-
-        // If the grid already contains image elements, reset their 
-        // src attribute so we can see the loading state.
-        if ( images.length !== 0 ) {
-            for ( var i = 0, l = images.length; i < l; i++ ) {
-                images[i].src = 'assets/img/trans.png';
-            }
-        }
-
-        var len = photos.length;
-
-        for ( var i = 0; i < photos.length; i++ ) {
-            console.log(images[i]);
-            // URL format details can be found here: http://www.flickr.com/services/api/misc.urls.html
-            var url = 'http://farm' + photos[i].farm + '.staticflickr.com/' + photos[i].server + '/' + photos[i].id + '_' + photos[i].secret + '_';
-            
-            images[i].src = url + ( i === 0 ? 'q' : 'q' ) + '.jpg';
-            images[i].dataset.lightbox = url + 'b.jpg';
-            images[i].className = 'loading';
-
-            if ( i > len ) {
-                images[i].className = 'hidden';
-            }
-        
-        }
 
     };
 
@@ -263,6 +248,7 @@
     };
 
 
+    // Utility function to add a class to a DOM element
     _.addClass = function( el, cl ) {
         
         if ( el.className.indexOf(cl) === -1 ) {
@@ -273,22 +259,32 @@
     };
 
 
+    // Utility function to remove a class from a DOM element
     _.removeClass = function( el, cl ) {
 
-        switch ( el.className.indexOf(cl) ) {
-            case -1:
-                return el;
-                break;
-
-            case el.className.length:
-                el.className.replace(' ' + cl, '');
-                break;
-
-            case 0:
-                el.className.replace( cl + ' ', '');
-                break;
+        if ( el.className.indexOf( cl ) !== -1 ) {
+            if ( el.className.indexOf( cl + ' ' ) !== -1 ) {
+                el.className = el.className.replace( cl + ' ', '' );         
+            } else if ( el.className.indexOf( ' ' + cl ) !== -1 ) {
+                el.className = el.className.replace( ' ' + cl, '' );
+            } else if ( el.className.length === cl.length ) {
+                el.className = '';
+            }
         }
         
+    };
+
+
+    // Simple extend function - iterates through all the properties of the second
+    // argument object and adds them / overwrites them on the first argument
+    _.extend = function(obj, ext) {
+
+        for (var prop in ext) {
+            obj[prop] = (obj.hasOwnProperty(prop)) ? obj[prop] : ext[prop];
+        }
+        
+        return obj;
+
     };
 
 
