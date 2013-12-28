@@ -9,7 +9,9 @@
     var _ = {},
         queries = {},
         elements = {},
-        photos = [];
+        photos = [],
+        searchterm,
+        currentpage;
 
     // Caching our API credentials for ease.
     var api_key = '5e0c3a5a074554ab8740d758e7384a3a',
@@ -61,8 +63,8 @@
     };
 
 
-    // Basic ajax GET function.  @TODO: replace the callback
-    // with a promise
+    // Basic ajax GET function.  
+    // @TODO: replace the callback with a promise
     _.get = function(url, callback) {
     
         var xhr = new XMLHttpRequest();
@@ -108,10 +110,13 @@
     };
 
 
+    // This is responsible to creating the grid of elements that 
+    // show the images receieved from the flickr API.
     _.buildGrid = function( opts ) {
 
         for ( var i = 0, l = settings.photos_per_page; i < l; i++ ) {
 
+            // Create an empty object for this item
             photos[i] = {};
 
             // Create a new image element and give it a class
@@ -132,15 +137,18 @@
 
             // Because we are creating new image elements, we need to add a 
             // click listener to each one to fire off the lightbox.
-            _.listen( photos[i].image, 'click', function(e) {
-                var img = new Image();
-                img.src = this.dataset.lightbox;
-                img.className = 'lightbox';
-
-                elements.lightbox.innerHTML = '';
-                elements.lightbox.appendChild(img);
-                elements.lightbox.className = 'visible';
-            });
+            // Note: this is only needed if the lightbox setting is true
+            if ( settings.lightbox === true ) {
+                _.listen( photos[i].image, 'click', function(e) {
+                    var img = new Image();
+                    img.className = 'lightbox';
+                    img.src = this.dataset.lightbox;
+                    
+                    elements.lightbox.innerHTML = '';
+                    elements.lightbox.appendChild(img);
+                    elements.lightbox.className = 'visible';
+                });    
+            }
 
             // Add in a float-clearing element
             if ( i === (settings.photos_per_page-1) ) {
@@ -154,7 +162,12 @@
     }
 
 
-    _.updateGrid = function( arr ) {
+    // This is responsible for updating the images in the grid
+    _.updateGrid = function( arr, start ) {
+        
+        if ( typeof start == 'undefined' ) {
+            start = 0;
+        }
 
         // Reset the src attributes of the grid images to show the
         // loading animation
@@ -164,7 +177,7 @@
 
         var len = ( arr.length < settings.photos_per_page ? arr.length : settings.photos_per_page );
 
-        for ( var i = 0; i < len; i++ ) {
+        for ( var i = start; i < ( start + len ); i++ ) {
         
             // Build the URL for this photo
             // URL format details can be found here: http://www.flickr.com/services/api/misc.urls.html
@@ -179,21 +192,26 @@
 
     };
 
+    // Query the Flickr API with the keywords entered by the user.
+    // Cache the response to our QUERIES object
+    // invoke the updateGrid function to display the search results
+    _.search = function( keywords, page ) {
 
-    _.search = function(keywords, page) {
+        var method = 'flickr.photos.search',
+            response;
 
         if ( typeof page === "undefined" ) {
             page = 1;
         }
 
-        var method = 'flickr.photos.search';        
+        searchterm = keywords;
+        currentpage = page;
 
-        _.get( RESTurl + '&method=' + method + '&tags=' + keywords + '&page=' + page + '&format=json&nojsoncallback=1&per_page=300', function(res){      
-            
-            var response = JSON.parse( res.response );
+        _.get( RESTurl + '&method=' + method + '&tags=' + keywords + '&page=' + page + '&format=json&nojsoncallback=1&per_page=300', function( res ){      
+            response = JSON.parse( res.response );
             queries[keywords] = response.photos.photo;
+            console.log(queries);
             _.updateGrid( response.photos.photo );
-
             return FlickrBot;
         });
 
@@ -205,17 +223,18 @@
     _.page = function( page ) {
         
         switch ( typeof page ) { 
-
             case 'string':
+                if ( page === 'left' ) {
+                    _.updateGrid( queries[searchterm], settings.photos_per_page * (page-1) );
+                } else if ( page === 'right' ) {
+                    _.updateGrid( queries[searchterm], settings.photos_per_page * (page+1) );
+                }
                 break;
-
             case 'number':
+                _.updateGrid( queries[searchterm], settings.photos_per_page * page );
                 break;
-
-            default:
-                break;
-
         }
+
     };
 
 
@@ -271,7 +290,7 @@
                 el.className = '';
             }
         }
-        
+
     };
 
 
