@@ -25,19 +25,19 @@ body, html {
 	display: block;
 	position: fixed;
 	left: 0px;
-	top: 0px;
+	top: -6px;
 	width: 0%;
 	height: 6px;
 	background: #2ecc71;
 	z-index: 999;
-	@include transition( width .3s ease-out );
+	@include transition( width .3s ease-out, top .1s ease-out .3s );
 
 	&.show {
 		top: 0px;
 	}
 }
 
-.flickr-search-wrapper {
+.flickr-search-box {
 	position: relative;
 	display: block;
 	width: 220px;
@@ -55,13 +55,18 @@ body, html {
 	}
 
 	button {
+		@include transition( color .1s ease-out );
+		@include border-radius(0px);
+	
 		display: block;
 		padding: 0;
 		margin: auto 0;
+
 		position: absolute;
 		right: 8px;
 		top: 0px;
 		bottom: 0px;
+
 		color: #7f8c8d;
 		font-size: 18px;
 		height: 18px;
@@ -69,8 +74,6 @@ body, html {
 		border: none;
 		background: transparent;
 		cursor: pointer;
-		@include border-radius(0px);
-		@include transition( color .1s ease-out );
 
 		&:hover, &:active, &:focus {
 			color: $orange;
@@ -88,11 +91,10 @@ body, html {
 	margin: 0 auto;
 }
 
-
 header {
 	display: block;
 	position: relative;
-	max-width: 1080px;
+	// max-width: 1080px;
 	width: 100%;
 
 	background: $orange;
@@ -101,12 +103,13 @@ header {
 	padding: 30px 0;
 	margin: 0px auto 30px auto;
 
-	.flickr-search-wrapper {
+	.flickr-search-box {
 		position: absolute;
 		right: 20px;
-		margin: auto;
 		top: 0px;
 		bottom: 0px;
+
+		margin: auto;
 	}
 }
 
@@ -131,16 +134,47 @@ header {
 	}
 }
 
+.flickr-direction-paging {
+	display: block;
+	max-width: 280px;
+	height: 36px;
+	margin: 0 auto 20px auto;
+	text-align: center;
+	position: relative;
 
+	a, span {
+		@include inline-block;
+		width: 30%;
+		color: $orange;
+	}
+
+	span {
+		position: relative;
+		top: -4px;
+	}
+
+	a {
+		font-size: 36px;
+		text-decoration: none;
+		@include transition( color .1s ease-out );
+
+		&:hover, &:active, &:focus {
+			color: #555555;
+		}
+	}
+}
 
 .flickr-grid {
 	color: #555555;
+	display: block;
+	position: relative;
+	padding-bottom: 30px;
 
 	h2 {
 		margin: 0 0 22px 0;
 	}
 	
-	.flickr-search-wrapper {
+	.flickr-search-box {
 		margin: 0 auto;
 		border: 1px solid #7f8c8d;
 
@@ -149,7 +183,7 @@ header {
 	}
 
 	.item {
-		width: 20%;
+		width: 14.2857%;
 		position: relative;
 		float: left;
 		cursor: pointer;
@@ -174,10 +208,11 @@ header {
 			top: 0;
 			background: transparent;
 			@include transition( background .1s ease-out );
+			border: 2px solid white;
 		}
 
 		&:hover, &:focus, &:active {
-			&:after {
+			& {
 				background: rgba(255,255,255,0.1);
 			}
 		}
@@ -209,10 +244,35 @@ header {
 	cursor: pointer;
 
 	background: #000;
-	background: rgba(0,0,0,0.5);
+	background: rgba(0,0,0,0.6);
 
 	&.visible {
 		display: block;
+		
+		&:before {
+			content: "\e60b";
+			@include icon;
+			display: block;
+			position: absolute;
+			right: 30px;
+			top: 30px;
+
+			width: 52px;
+			height: 52px;
+
+			color: #f9672c;
+			font-size: 52px;
+
+			text-align: center;
+			background: white;
+			@include border-radius(500px);
+			@include transition( color .1s ease-out, background .1s ease-out );
+	
+			&:hover, &:active, &:focus {
+				color: white;
+				background: $orange;
+			}
+		}
 	}
 	
 	img {
@@ -233,23 +293,25 @@ header {
 		@include box-shadow( 0px 0px 6px rgba(0,0,0,0.4) );
 		background: $orange image-url('loader.gif') center center no-repeat;
 		background-size: 32px auto;
+
+
 	}
 }
 
 footer {
 	display: block;
-	position: absolute;
+	position: fixed;
 	left: 0;
 	right: 0;
 	bottom: 0;
-	max-width: 1080px;
+	// max-width: 1080px;
 	width: 100%;
 
 	background: $orange;
 	color: #fff;
 
-	padding: 30px 0;
-	margin: 30px auto;
+	padding: 16px 0;
+	margin: 0 auto;
 
 	p {
 		text-align: center;

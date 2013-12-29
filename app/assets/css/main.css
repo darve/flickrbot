@@ -121,6 +121,8 @@ h2 {
   text-align: center;
 }
 
+/* 	Icon font(s), yeah?
+/* ======================================= */
 @font-face {
   font-family: 'flickrbot';
   src: url("/assets/fonts/flickrbot.eot");
@@ -133,7 +135,7 @@ h2 {
   font-style: normal;
 }
 
-/* line 14, ../../../scss/partials/_icons.scss */
+/* line 30, ../../../scss/partials/_icons.scss */
 [class^="icon-"]:before, [class*=" icon-"]:before {
   font-family: 'flickrbot';
   speak: none;
@@ -147,67 +149,67 @@ h2 {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* line 41, ../../../scss/partials/_icons.scss */
+/* line 45, ../../../scss/partials/_icons.scss */
 .icon-minus:before {
   content: "\e600";
 }
 
-/* line 44, ../../../scss/partials/_icons.scss */
+/* line 48, ../../../scss/partials/_icons.scss */
 .icon-plus:before {
   content: "\e601";
 }
 
-/* line 47, ../../../scss/partials/_icons.scss */
+/* line 51, ../../../scss/partials/_icons.scss */
 .icon-mouse:before {
   content: "\e602";
 }
 
-/* line 50, ../../../scss/partials/_icons.scss */
+/* line 54, ../../../scss/partials/_icons.scss */
 .icon-arrow-right:before {
   content: "\e603";
 }
 
-/* line 53, ../../../scss/partials/_icons.scss */
+/* line 57, ../../../scss/partials/_icons.scss */
 .icon-arrow-up:before {
   content: "\e604";
 }
 
-/* line 56, ../../../scss/partials/_icons.scss */
+/* line 60, ../../../scss/partials/_icons.scss */
 .icon-arrow-down:before {
   content: "\e605";
 }
 
-/* line 59, ../../../scss/partials/_icons.scss */
+/* line 63, ../../../scss/partials/_icons.scss */
 .icon-arrow-left:before {
   content: "\e606";
 }
 
-/* line 62, ../../../scss/partials/_icons.scss */
+/* line 66, ../../../scss/partials/_icons.scss */
 .icon-resize-enlarge:before {
   content: "\e607";
 }
 
-/* line 65, ../../../scss/partials/_icons.scss */
+/* line 69, ../../../scss/partials/_icons.scss */
 .icon-resize-shrink:before {
   content: "\e608";
 }
 
-/* line 68, ../../../scss/partials/_icons.scss */
+/* line 72, ../../../scss/partials/_icons.scss */
 .icon-facebook:before {
   content: "\e609";
 }
 
-/* line 71, ../../../scss/partials/_icons.scss */
+/* line 75, ../../../scss/partials/_icons.scss */
 .icon-twitter:before {
   content: "\e60a";
 }
 
-/* line 74, ../../../scss/partials/_icons.scss */
+/* line 78, ../../../scss/partials/_icons.scss */
 .icon-cross:before {
   content: "\e60b";
 }
 
-/* line 77, ../../../scss/partials/_icons.scss */
+/* line 81, ../../../scss/partials/_icons.scss */
 .icon-search:before {
   content: "\e60c";
 }
@@ -242,15 +244,16 @@ body, html {
   display: block;
   position: fixed;
   left: 0px;
-  top: 0px;
+  top: -6px;
   width: 0%;
   height: 6px;
   background: #2ecc71;
   z-index: 999;
-  -webkit-transition: width 0.3s ease-out;
-  -moz-transition: width 0.3s ease-out;
-  -o-transition: width 0.3s ease-out;
-  transition: width 0.3s ease-out;
+  -webkit-transition: width 0.3s ease-out, top 0.1s ease-out;
+  -webkit-transition-delay: 0s, 0.3s;
+  -moz-transition: width 0.3s ease-out, top 0.1s ease-out 0.3s;
+  -o-transition: width 0.3s ease-out, top 0.1s ease-out 0.3s;
+  transition: width 0.3s ease-out, top 0.1s ease-out 0.3s;
 }
 /* line 35, ../../../scss/partials/_global.scss */
 .flickr-loading-bar.show {
@@ -258,14 +261,14 @@ body, html {
 }
 
 /* line 40, ../../../scss/partials/_global.scss */
-.flickr-search-wrapper {
+.flickr-search-box {
   position: relative;
   display: block;
   width: 220px;
   height: 32px;
 }
 /* line 46, ../../../scss/partials/_global.scss */
-.flickr-search-wrapper input[type=text] {
+.flickr-search-box input[type=text] {
   border: none;
   outline: none;
   padding: 4px;
@@ -280,7 +283,16 @@ body, html {
   border-radius: 0px;
 }
 /* line 57, ../../../scss/partials/_global.scss */
-.flickr-search-wrapper button {
+.flickr-search-box button {
+  -webkit-transition: color 0.1s ease-out;
+  -moz-transition: color 0.1s ease-out;
+  -o-transition: color 0.1s ease-out;
+  transition: color 0.1s ease-out;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -ms-border-radius: 0px;
+  -o-border-radius: 0px;
+  border-radius: 0px;
   display: block;
   padding: 0;
   margin: auto 0;
@@ -295,22 +307,13 @@ body, html {
   border: none;
   background: transparent;
   cursor: pointer;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  -ms-border-radius: 0px;
-  -o-border-radius: 0px;
-  border-radius: 0px;
-  -webkit-transition: color 0.1s ease-out;
-  -moz-transition: color 0.1s ease-out;
-  -o-transition: color 0.1s ease-out;
-  transition: color 0.1s ease-out;
 }
-/* line 75, ../../../scss/partials/_global.scss */
-.flickr-search-wrapper button:hover, .flickr-search-wrapper button:active, .flickr-search-wrapper button:focus {
+/* line 78, ../../../scss/partials/_global.scss */
+.flickr-search-box button:hover, .flickr-search-box button:active, .flickr-search-box button:focus {
   color: #f9672c;
 }
 
-/* line 81, ../../../scss/partials/_global.scss */
+/* line 84, ../../../scss/partials/_global.scss */
 .full-width {
   display: block;
   position: relative;
@@ -319,33 +322,32 @@ body, html {
   margin: 0 auto;
 }
 
-/* line 92, ../../../scss/partials/_global.scss */
+/* line 94, ../../../scss/partials/_global.scss */
 header {
   display: block;
   position: relative;
-  max-width: 1080px;
   width: 100%;
   background: #f9672c;
   color: #fff;
   padding: 30px 0;
   margin: 0px auto 30px auto;
 }
-/* line 104, ../../../scss/partials/_global.scss */
-header .flickr-search-wrapper {
+/* line 106, ../../../scss/partials/_global.scss */
+header .flickr-search-box {
   position: absolute;
   right: 20px;
-  margin: auto;
   top: 0px;
   bottom: 0px;
+  margin: auto;
 }
 
-/* line 113, ../../../scss/partials/_global.scss */
+/* line 116, ../../../scss/partials/_global.scss */
 .flickr-masthead {
   height: 320px;
   margin: 0 0 30px 0;
   overflow: hidden;
 }
-/* line 119, ../../../scss/partials/_global.scss */
+/* line 122, ../../../scss/partials/_global.scss */
 .flickr-masthead img {
   display: block;
   position: absolute;
@@ -357,29 +359,71 @@ header .flickr-search-wrapper {
   margin: auto;
 }
 
-/* line 136, ../../../scss/partials/_global.scss */
-.flickr-grid {
+/* line 137, ../../../scss/partials/_global.scss */
+.flickr-direction-paging {
+  display: block;
+  max-width: 280px;
+  height: 36px;
+  margin: 0 auto 20px auto;
+  text-align: center;
+  position: relative;
+}
+/* line 145, ../../../scss/partials/_global.scss */
+.flickr-direction-paging a, .flickr-direction-paging span {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  zoom: 1;
+  *display: inline;
+  width: 30%;
+  color: #f9672c;
+}
+/* line 151, ../../../scss/partials/_global.scss */
+.flickr-direction-paging span {
+  position: relative;
+  top: -4px;
+}
+/* line 156, ../../../scss/partials/_global.scss */
+.flickr-direction-paging a {
+  font-size: 36px;
+  text-decoration: none;
+  -webkit-transition: color 0.1s ease-out;
+  -moz-transition: color 0.1s ease-out;
+  -o-transition: color 0.1s ease-out;
+  transition: color 0.1s ease-out;
+}
+/* line 161, ../../../scss/partials/_global.scss */
+.flickr-direction-paging a:hover, .flickr-direction-paging a:active, .flickr-direction-paging a:focus {
   color: #555555;
 }
-/* line 139, ../../../scss/partials/_global.scss */
+
+/* line 167, ../../../scss/partials/_global.scss */
+.flickr-grid {
+  color: #555555;
+  display: block;
+  position: relative;
+  padding-bottom: 30px;
+}
+/* line 173, ../../../scss/partials/_global.scss */
 .flickr-grid h2 {
   margin: 0 0 22px 0;
 }
-/* line 143, ../../../scss/partials/_global.scss */
-.flickr-grid .flickr-search-wrapper {
+/* line 177, ../../../scss/partials/_global.scss */
+.flickr-grid .flickr-search-box {
   margin: 0 auto;
   border: 1px solid #7f8c8d;
   width: 300px;
   height: 42px;
 }
-/* line 151, ../../../scss/partials/_global.scss */
+/* line 185, ../../../scss/partials/_global.scss */
 .flickr-grid .item {
-  width: 20%;
+  width: 14.2857%;
   position: relative;
   float: left;
   cursor: pointer;
 }
-/* line 157, ../../../scss/partials/_global.scss */
+/* line 191, ../../../scss/partials/_global.scss */
 .flickr-grid .item:before {
   content: "";
   display: block;
@@ -388,7 +432,7 @@ header .flickr-search-wrapper {
   background: #f9672c url(data:image/gif;base64,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) center center no-repeat;
   background-size: 32px auto;
 }
-/* line 166, ../../../scss/partials/_global.scss */
+/* line 200, ../../../scss/partials/_global.scss */
 .flickr-grid .item:after {
   content: "";
   pointer-events: none;
@@ -403,28 +447,29 @@ header .flickr-search-wrapper {
   -moz-transition: background 0.1s ease-out;
   -o-transition: background 0.1s ease-out;
   transition: background 0.1s ease-out;
+  border: 2px solid white;
 }
-/* line 180, ../../../scss/partials/_global.scss */
-.flickr-grid .item:hover:after, .flickr-grid .item:focus:after, .flickr-grid .item:active:after {
+/* line 215, ../../../scss/partials/_global.scss */
+.flickr-grid .item:hover, .flickr-grid .item:focus, .flickr-grid .item:active {
   background: rgba(255, 255, 255, 0.1);
 }
-/* line 185, ../../../scss/partials/_global.scss */
+/* line 220, ../../../scss/partials/_global.scss */
 .flickr-grid .item.hidden {
   display: none;
 }
-/* line 190, ../../../scss/partials/_global.scss */
+/* line 225, ../../../scss/partials/_global.scss */
 .flickr-grid img {
   position: absolute;
   width: 100%;
   left: 0;
   top: 0;
 }
-/* line 196, ../../../scss/partials/_global.scss */
+/* line 231, ../../../scss/partials/_global.scss */
 .flickr-grid img.hidden {
   display: none;
 }
 
-/* line 202, ../../../scss/partials/_global.scss */
+/* line 237, ../../../scss/partials/_global.scss */
 #flickr-lightbox {
   position: fixed;
   width: 100%;
@@ -434,13 +479,50 @@ header .flickr-search-wrapper {
   display: none;
   cursor: pointer;
   background: #000;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
 }
-/* line 214, ../../../scss/partials/_global.scss */
+/* line 249, ../../../scss/partials/_global.scss */
 #flickr-lightbox.visible {
   display: block;
 }
-/* line 218, ../../../scss/partials/_global.scss */
+/* line 252, ../../../scss/partials/_global.scss */
+#flickr-lightbox.visible:before {
+  content: "\e60b";
+  font-family: 'flickrbot';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: block;
+  position: absolute;
+  right: 30px;
+  top: 30px;
+  width: 52px;
+  height: 52px;
+  color: #f9672c;
+  font-size: 52px;
+  text-align: center;
+  background: white;
+  -webkit-border-radius: 500px;
+  -moz-border-radius: 500px;
+  -ms-border-radius: 500px;
+  -o-border-radius: 500px;
+  border-radius: 500px;
+  -webkit-transition: color 0.1s ease-out, background 0.1s ease-out;
+  -moz-transition: color 0.1s ease-out, background 0.1s ease-out;
+  -o-transition: color 0.1s ease-out, background 0.1s ease-out;
+  transition: color 0.1s ease-out, background 0.1s ease-out;
+}
+/* line 271, ../../../scss/partials/_global.scss */
+#flickr-lightbox.visible:before:hover, #flickr-lightbox.visible:before:active, #flickr-lightbox.visible:before:focus {
+  color: white;
+  background: #f9672c;
+}
+/* line 278, ../../../scss/partials/_global.scss */
 #flickr-lightbox img {
   display: block;
   max-width: 80%;
@@ -460,26 +542,25 @@ header .flickr-search-wrapper {
   background-size: 32px auto;
 }
 
-/* line 239, ../../../scss/partials/_global.scss */
+/* line 301, ../../../scss/partials/_global.scss */
 footer {
   display: block;
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
-  max-width: 1080px;
   width: 100%;
   background: #f9672c;
   color: #fff;
-  padding: 30px 0;
-  margin: 30px auto;
+  padding: 16px 0;
+  margin: 0 auto;
 }
-/* line 254, ../../../scss/partials/_global.scss */
+/* line 316, ../../../scss/partials/_global.scss */
 footer p {
   text-align: center;
   font-size: 14px;
 }
-/* line 258, ../../../scss/partials/_global.scss */
+/* line 320, ../../../scss/partials/_global.scss */
 footer p a {
   color: #fff;
   text-decoration: none;
@@ -488,7 +569,7 @@ footer p a {
   -o-transition: color 0.1s ease-out;
   transition: color 0.1s ease-out;
 }
-/* line 263, ../../../scss/partials/_global.scss */
+/* line 325, ../../../scss/partials/_global.scss */
 footer p a:hover, footer p a:active, footer p a:focus {
   border: none;
   outline: none;
@@ -505,11 +586,16 @@ footer p a:hover, footer p a:active, footer p a:focus {
     display: block;
   }
   /* line 12, ../../../scss/partials/_mobile.scss */
-  header input[type=text] {
+  header .flickr-search-box {
     display: block;
     position: relative;
     right: 0;
     margin: 12px auto;
+  }
+
+  /* line 21, ../../../scss/partials/_mobile.scss */
+  .flickr-grid .item {
+    width: 33.3333%;
   }
 }
 @media screen and (min-width: 768px) and (max-width: 959px) {
@@ -519,6 +605,11 @@ footer p a:hover, footer p a:active, footer p a:focus {
   header h1 {
     text-align: left;
     padding-left: 20px;
+  }
+
+  /* line 14, ../../../scss/partials/_tablet.scss */
+  .flickr-grid .item {
+    width: 20%;
   }
 }
 @media screen and (min-width: 960px) {

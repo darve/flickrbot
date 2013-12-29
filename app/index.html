@@ -23,27 +23,27 @@
 	
 	<header>
 		<h1 class="f-bold f-uppercase">Dave's Flickr Bot</h1>
-		<div class="flickr-search-wrapper">
-			<input type="text" placeholder="Search Flickr" class="f-normal f-uppercase flickr-search" />
-			<button class="icon-search"></button>
-		</div>
+		<form class="flickr-search-box">
+			<input type="text" placeholder="Search Flickr" class="f-normal f-uppercase flickr-search" />	
+			<button type="submit"class="icon-search"></button>
+		</form>
 	</header>
 
 	<div id="wrapper" class="full-width">
-		<div class="flickr-direction-paging"></div>
-		<div class="flickr-number-paging">
-			<a href="#" class="left"></a>
-			<a href="#" class="right"></a>
+		<div class="flickr-direction-paging">
+			<a href="#" class="left icon-arrow-left"></a>
+			<span class="page f-regular f-uppercase">Page: 1</span>
+			<a href="#" class="right icon-arrow-right"></a>
 		</div>
 		<div class="flickr-grid full-width">
 			
-			<div class="flickr-placeholder-wrapper">
+<!-- 			<div class="flickr-placeholder-wrapper">
 				<h2 class="f-bold f-uppercase">Start searching flickr now!</h2>
-				<div class="flickr-search-wrapper">
-					<input type="text" placeholder="Search Flickr" class="f-normal f-uppercase flickr-search" />
-					<button class="icon-search"></button>
-				</div>	
-			</div>
+				<form class="flickr-search-box">
+					<input type="text" placeholder="Search Flickr" class="f-normal f-uppercase flickr-search" />	
+					<button type="submit"class="icon-search"></button>
+				</form>
+			</div> -->
 
 		</div>
 	</div>

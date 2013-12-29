@@ -1,5 +1,7 @@
 
-/*  Dave's Flickr Machine
+/*  Module: Dave's Flickr Machine
+/*  Author: David Woollard
+/*  Date: Dec 2013
 /* =============================== */
 
 (function(w,d){
@@ -21,7 +23,8 @@
     // Global settings for the flickr bot, overridable via parameters
     // fed to the init function
     var settings = {
-        photos_per_page: 40
+        photos_per_page: 40,
+        lightbox: true
     };
 
     var FlickrBot = function() {
@@ -41,7 +44,7 @@
         elements.grid = _.select('.flickr-grid');
         elements.masthead = _.select('.flickr-masthead');
         elements.lightbox = _.select('#flickr-lightbox');
-        elements.searchfield = _.select('.flickr-search');
+        elements.searchbox = _.select('.flickr-search-box');
         elements.loadingbar = _.select('.flickr-loading-bar');
 
         // Listen for lightbox clicks ( closes the lightbox )
@@ -49,16 +52,44 @@
             elements.lightbox.className = '';
         });
 
-        // Listen for search input
-        _.listen( elements.searchfield, 'keydown', function(e) {
-            e.which = e.which || e.keyCode;
-            if ( e.which == 13 ) {
-                _.search( e.target.value );
+        // This check was added in to allow the developer to have multiple flickr
+        // search boxes on one page.  This is currently a pretty ugly implementation
+        // thereof - @TODO: Reduce this to one block via a forEach polyfill.
+        if ( length in elements.searchbox && elements.searchbox.length > 1 && elements.searchbox.nodeType === undefined ) {
+            for ( var i = 0; i < elements.searchbox.length; i++ ) {
+                _.listen( elements.searchbox[i], 'submit', function(e) {
+                    _.prevent(e); 
+                });        
+                _.listen( elements.searchbox[i].getElementsByTagName('button'), 'click', function(e) {
+                    _.prevent(e);
+                    _.search(this.parentNode.getElementsByTagName('input')[0].value);
+                });
+                _.listen( elements.searchbox[i].getElementsByTagName('input'), 'keydown', function(e) {
+                    e.which = e.which || e.keyCode;
+                    if ( e.which == 13 ) {
+                        _.prevent(e);
+                        _.search( e.target.value );
+                    }
+                });
             }
-        });
+        } else {
+                _.listen( elements.searchbox, 'submit', function(e) {
+                    _.prevent(e); 
+                });        
+                _.listen( elements.searchbox.getElementsByTagName('button'), 'click', function(e) {
+                    _.prevent(e);
+                    _.search(this.parentNode.getElementsByTagName('input')[0].value);
+                });
+                _.listen( elements.searchbox.getElementsByTagName('input'), 'keydown', function(e) {
+                    e.which = e.which || e.keyCode;
+                    if ( e.which == 13 ) {
+                        _.prevent(e);
+                        _.search( e.target.value );
+                    }
+                });
+        }
 
         _.buildGrid();
-
         return FlickrBot;
     };
 
@@ -74,6 +105,7 @@
 
             switch ( xhr.readyState ) {
                 case 1:
+                    _.addClass( elements.loadingbar, 'show' );
                     elements.loadingbar.style.width = '25%';
                     return;
                     break;
@@ -86,11 +118,12 @@
                 case 3:
                     elements.loadingbar.style.width = '75%';
                     return;
-                    break;
+                    break;s
 
                 // Request is good, lets do this
                 case 4:
                     elements.loadingbar.style.width = '100%';
+                    _.removeClass( elements.loadingbar, 'show' );
                     callback(xhr);
                     break;
             }
@@ -185,6 +218,7 @@
         }
 
     };
+
 
     // Query the Flickr API with the keywords entered by the user.
     // Cache the response to our QUERIES object
@@ -305,6 +339,12 @@
         return obj;
 
     };
+
+
+    _.prevent = function(e) {
+        e.preventDefault();
+        e.stopPropagation(); 
+    }
 
 
     // Adds an event listener - returns the appropriate function depending 

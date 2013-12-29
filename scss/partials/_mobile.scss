@@ -8,11 +8,17 @@ header {
 		text-align: center;
 		display: block;
 	}
-
-	input[type=text] {
+	
+	.flickr-search-box {
 		display: block;
 		position: relative;
 		right: 0;
 		margin: 12px auto;
+	}
+}
+
+.flickr-grid {
+	.item {
+		width: 33.3333%;
 	}
 }
