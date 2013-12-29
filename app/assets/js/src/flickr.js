@@ -46,10 +46,24 @@
         elements.lightbox = _.select('#flickr-lightbox');
         elements.searchbox = _.select('.flickr-search-box');
         elements.loadingbar = _.select('.flickr-loading-bar');
+        elements.paging = _.select('.flickr-direction-paging');
 
         // Listen for lightbox clicks ( closes the lightbox )
         _.listen( elements.lightbox, 'click', function(e) {
             elements.lightbox.className = '';
+        });
+
+        console.log( elements.paging.querySelector('.left') );
+
+        _.listen( elements.paging.querySelector('.left'), 'click', function(e){
+            _.prevent(e);
+            _.page('left');
+        });
+
+        _.listen( elements.paging.querySelector('.right'), 'click', function(e){
+            _.prevent(e);
+            _.page('right');
+            console.log('GOING RIGHT');
         });
 
         // This check was added in to allow the developer to have multiple flickr
@@ -203,12 +217,12 @@
         }
 
         var len = ( arr.length < settings.photos_per_page ? arr.length : settings.photos_per_page );
-
-        for ( var i = start; i < ( start + len ); i++ ) {
-        
+        console.log( len );
+        for ( var i = 0; i < len; i++ ) {
+            var f = start + i;
             // Build the URL for this photo
             // URL format details can be found here: http://www.flickr.com/services/api/misc.urls.html
-            var url = 'http://farm' + arr[i].farm + '.staticflickr.com/' + arr[i].server + '/' + arr[i].id + '_' + arr[i].secret + '_';
+            var url = 'http://farm' + arr[f].farm + '.staticflickr.com/' + arr[f].server + '/' + arr[f].id + '_' + arr[f].secret + '_';
             
             photos[i].image.src = url + ( i === 0 ? 'q' : 'q' ) + '.jpg';
             photos[i].image.dataset.lightbox = url + 'b.jpg';
@@ -259,9 +273,11 @@
         switch ( typeof page ) { 
             case 'string':
                 if ( page === 'left' ) {
-                    _.updateGrid( queries[searchterm], settings.photos_per_page * (page-1) );
+                    _.updateGrid( queries[searchterm], settings.photos_per_page * (currentpage-1) );
                 } else if ( page === 'right' ) {
-                    _.updateGrid( queries[searchterm], settings.photos_per_page * (page+1) );
+                    console.log(settings.photos_per_page * (currentpage+1) );;
+                    _.updateGrid( queries[searchterm], settings.photos_per_page * (currentpage+1) );
+                    currentpage++;
                 }
                 break;
             case 'number':
