@@ -273,11 +273,15 @@
         switch ( typeof page ) { 
             case 'string':
                 if ( page === 'left' ) {
-                    _.updateGrid( queries[searchterm], settings.photos_per_page * (currentpage-1) );
+                    if ( currentpage > 1 ) {
+                        _.updateGrid( queries[searchterm], settings.photos_per_page * (currentpage-1) );
+                        currentpage--;
+                        elements.paging.getElementsByTagName('span')[0].innerHTML = ('Page ' + currentpage);    
+                    }
                 } else if ( page === 'right' ) {
-                    console.log(settings.photos_per_page * (currentpage+1) );;
                     _.updateGrid( queries[searchterm], settings.photos_per_page * (currentpage+1) );
                     currentpage++;
+                    elements.paging.getElementsByTagName('span')[0].innerHTML = ('Page ' + currentpage);
                 }
                 break;
             case 'number':
