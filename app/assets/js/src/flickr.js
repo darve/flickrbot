@@ -239,8 +239,13 @@
             }    
         }
 
-        if ( arr.length < ( start + settings.photos_per_page ) && queries[searchterm].all === false ) {
+        console.log( 'arr.length: ' + arr.length );
+        console.log( start + settings.photos_per_page );
+
+        if ( queries[searchterm].length < ( start + settings.photos_per_page ) && queries[searchterm].all === false ) {
             _.search( searchterm, queries[searchterm].page );
+            console.log( queries[searchterm].page);
+            console.log('WEVE RUN OUT');
         } else {
             var len = ( arr.length < settings.photos_per_page ? arr.length : settings.photos_per_page );
         
@@ -249,15 +254,17 @@
                 // This is the array index we are looking at in our cached photos
                 var f = start + i;
 
-                // Build the URL for this photo
-                // URL format details can be found here: http://www.flickr.com/services/api/misc.urls.html
-                var url = 'http://farm' + arr[f].farm + '.staticflickr.com/' + arr[f].server + '/' + arr[f].id + '_' + arr[f].secret + '_';
-                
-                photos[i].image.src = url + ( i === 0 ? 'q' : 'q' ) + '.jpg';
-                photos[i].image.dataset.lightbox = url + 'b.jpg';
-                photos[i].image.className = 'loading';
-                _.removeClass( photos[i].wrapper, 'hidden' );
-            
+                if ( arr[f] ) {
+                    // Build the URL for this photo
+                    // URL format details can be found here: http://www.flickr.com/services/api/misc.urls.html
+                    var url = 'http://farm' + arr[f].farm + '.staticflickr.com/' + arr[f].server + '/' + arr[f].id + '_' + arr[f].secret + '_';   
+                    photos[i].image.src = url + ( i === 0 ? 'q' : 'q' ) + '.jpg';
+                    photos[i].image.dataset.lightbox = url + 'b.jpg';
+                    photos[i].image.className = 'loading';
+                    _.removeClass( photos[i].wrapper, 'hidden' );
+                } else {
+                    _.addClass( photos[i].wrapper, 'hidden' );
+                }
             }
 
             if ( loaded === false ) {
@@ -268,10 +275,11 @@
             if ( start === 0 && queries[searchterm].length >= ( start + settings.photos_per_page ) ) {
                 _.addClass(elements.paging, 'show');    
             }            
-        }
 
         // Re-enable the UI
         loading = false;
+
+        }
 
     };
 
@@ -295,10 +303,15 @@
             for ( var i = 0, l = settings.photos_per_page; i < l; i++ ) {
                 photos[i].image.src = 'assets/img/trans.png';
             }
-        }   
-
-        searchterm = keywords;
-        currentpage = page;
+            searchterm = keywords;
+            currentpage = page;
+        } else {
+            page++;
+            elements.paging.getElementsByTagName('span')[0].innerHTML = ('Page ' + currentpage);
+            for ( var i = 0, l = settings.photos_per_page; i < l; i++ ) {
+                photos[i].image.src = 'assets/img/trans.png';
+            }
+        }
 
         // Update the UI in case it's looking a bit bleak
         _.addClass(elements.status.querySelector('.loading-animation'), 'animated');
@@ -316,14 +329,22 @@
                     _.removeClass(elements.status.querySelector('.loading-animation'), 'animated');
                     elements.status.querySelector('.message').innerHTML = 'Sorry, your search returned no results.';
                 } else {
-                    queries[keywords] = response.photos.photo;
-                    queries[keywords].page = page;
+                    if ( page === 1 ) {
+                        queries[keywords] = response.photos.photo;
+                    } else {
+                        Array.prototype.push.apply(queries[keywords], response.photos.photo);
+                    }
+                    queries[keywords].page = page; 
                     if ( response.photos.photo < settings.query_size) {
                         queries[keywords].all = true;
                     } else {
                         queries[keywords].all = false;
                     }
-                    _.updateGrid( response.photos.photo );                        
+                    if ( page === 1 ) {
+                        _.updateGrid( response.photos.photo );                            
+                    } else {
+                        _.updateGrid( queries[searchterm], currentpage );
+                    }
                 }
             } catch(e) {
                 _.hideGrid();
@@ -355,7 +376,6 @@
                         }
                     } else if ( page === 'right' ) {
                         loading = true;
-                        console.log(settings.photos_per_page * (currentpage+1));
                         _.updateGrid( queries[searchterm], settings.photos_per_page * (currentpage+1) );
                         currentpage++;
                         elements.paging.getElementsByTagName('span')[0].innerHTML = ('Page ' + currentpage);
