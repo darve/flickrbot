@@ -230,22 +230,14 @@
 
     // This is responsible for updating the images in the grid
     _.updateGrid = function( arr, start ) {
-        
+
         if ( typeof start == 'undefined' ) {
             start = 0;
-        } else {
-            for ( var i = 0, l = settings.photos_per_page; i < l; i++ ) {
-                photos[i].image.src = 'assets/img/trans.png';
-            }    
         }
 
-        console.log( 'arr.length: ' + arr.length );
-        console.log( start + settings.photos_per_page );
-
         if ( queries[searchterm].length < ( start + settings.photos_per_page ) && queries[searchterm].all === false ) {
+            console.log('bastard');
             _.search( searchterm, queries[searchterm].page );
-            console.log( queries[searchterm].page);
-            console.log('WEVE RUN OUT');
         } else {
             var len = ( arr.length < settings.photos_per_page ? arr.length : settings.photos_per_page );
         
@@ -270,8 +262,6 @@
             if ( loaded === false ) {
                 loaded = true;
             }
-            console.log(len)
-            console.log(settings.photos_per_page);
             if ( start === 0 && queries[searchterm].length >= ( start + settings.photos_per_page ) ) {
                 _.addClass(elements.paging, 'show');    
             }            
@@ -298,19 +288,11 @@
             elements.paging.getElementsByTagName('span')[0].innerHTML = ('Page ' + currentpage);
             _.addClass(elements.paging.querySelector('.left'), 'disabled');
 
-            // Reset the src attributes of the grid images to show the
-            // loading animation
-            for ( var i = 0, l = settings.photos_per_page; i < l; i++ ) {
-                photos[i].image.src = 'assets/img/trans.png';
-            }
             searchterm = keywords;
             currentpage = page;
         } else {
             page++;
             elements.paging.getElementsByTagName('span')[0].innerHTML = ('Page ' + currentpage);
-            for ( var i = 0, l = settings.photos_per_page; i < l; i++ ) {
-                photos[i].image.src = 'assets/img/trans.png';
-            }
         }
 
         // Update the UI in case it's looking a bit bleak
@@ -325,17 +307,21 @@
             try {
                 response = JSON.parse( res.response );
                 if ( response.photos.photo.length === 0 ) {
+                    // This query gave us no results, hide the UI and prompt
+                    // the user to search again
                     _.hideGrid();
                     _.removeClass(elements.status.querySelector('.loading-animation'), 'animated');
                     elements.status.querySelector('.message').innerHTML = 'Sorry, your search returned no results.';
                 } else {
                     if ( page === 1 ) {
+                        // Cache this set of search results
                         queries[keywords] = response.photos.photo;
                     } else {
+                        // Add this new set of search results to our cached search results
                         Array.prototype.push.apply(queries[keywords], response.photos.photo);
                     }
                     queries[keywords].page = page; 
-                    if ( response.photos.photo < settings.query_size) {
+                    if ( response.photos.photo.length < settings.query_size) {
                         queries[keywords].all = true;
                     } else {
                         queries[keywords].all = false;
@@ -367,19 +353,31 @@
                 case 'string':
                     if ( page === 'left' ) {
                         if ( currentpage > 1 ) {
-                            _.updateGrid( queries[searchterm], settings.photos_per_page * (currentpage-1) );
-                            currentpage--;
-                            elements.paging.getElementsByTagName('span')[0].innerHTML = ('Page ' + currentpage);
-                            if ( currentpage === 1 ) {
-                                _.addClass(elements.paging.querySelector('.left'), 'disabled');
+                            for ( var i = 0, l = settings.photos_per_page; i < l; i++ ) {
+                                photos[i].image.src = 'assets/img/trans.png';
                             }
+                            setTimeout( function() {
+                                _.updateGrid( queries[searchterm], settings.photos_per_page * (currentpage-1) );
+                                currentpage--;
+                                elements.paging.getElementsByTagName('span')[0].innerHTML = ('Page ' + currentpage);
+                                if ( currentpage === 1 ) {
+                                    _.addClass(elements.paging.querySelector('.left'), 'disabled');
+                                }
+                            }, 25);
+
                         }
                     } else if ( page === 'right' ) {
                         loading = true;
-                        _.updateGrid( queries[searchterm], settings.photos_per_page * (currentpage+1) );
-                        currentpage++;
-                        elements.paging.getElementsByTagName('span')[0].innerHTML = ('Page ' + currentpage);
-                        _.removeClass(elements.paging.querySelector('.left'), 'disabled');
+                        for ( var i = 0, l = settings.photos_per_page; i < l; i++ ) {
+                            photos[i].image.src = 'assets/img/trans.png';
+                        }
+                        setTimeout( function(){
+                            _.updateGrid( queries[searchterm], settings.photos_per_page * (currentpage+1) );
+                            currentpage++;
+                            elements.paging.getElementsByTagName('span')[0].innerHTML = ('Page ' + currentpage);
+                            _.removeClass(elements.paging.querySelector('.left'), 'disabled');
+                        }, 25);
+
                     }
                     break;
                 case 'number':
