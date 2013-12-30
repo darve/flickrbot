@@ -49,6 +49,7 @@
         elements.searchbox = _.select('.flickr-search-box');
         elements.loadingbar = _.select('.flickr-loading-bar');
         elements.paging = _.select('.flickr-direction-paging');
+        elements.status = _.select('.flickr-status');
 
         _.addClass(elements.paging.querySelector('.left'), 'disabled');
 
@@ -222,9 +223,12 @@
         }
 
         var len = ( arr.length < settings.photos_per_page ? arr.length : settings.photos_per_page );
-        console.log( len );
+    
         for ( var i = 0; i < len; i++ ) {
+
+            // This is the array index we are looking at in our cached photos
             var f = start + i;
+
             // Build the URL for this photo
             // URL format details can be found here: http://www.flickr.com/services/api/misc.urls.html
             var url = 'http://farm' + arr[f].farm + '.staticflickr.com/' + arr[f].server + '/' + arr[f].id + '_' + arr[f].secret + '_';
@@ -266,9 +270,23 @@
         }
 
         _.get( RESTurl + '&method=' + method + '&tags=' + keywords + '&page=' + page + '&format=json&nojsoncallback=1&per_page=300', function( res ){      
-            response = JSON.parse( res.response );
-            queries[keywords] = response.photos.photo;
-            _.updateGrid( response.photos.photo );
+
+            try {
+                response = JSON.parse( res.response );
+                if ( response.photos.photo.length === 0 ) {
+                    console.log(elements.status.querySelector('.loading-animation'));
+                    _.removeClass(elements.status.querySelector('.loading-animation'), 'animated');
+                    elements.status.querySelector('.message').innerHTML = 'Sorry, your search returned no results.';
+                } else {
+                    queries[keywords] = response.photos.photo;
+                    _.updateGrid( response.photos.photo );                        
+                }
+            } catch(e) {
+                _.removeClass(elements.status.querySelector('.loading-animation'), 'animated');
+                elements.status.querySelector('.message').innerHTML = "I'm terribly sorry, but an error has occurred.  Try refreshing your browser.";
+                console.log('fail');
+            }
+
             return FlickrBot;
         });
 

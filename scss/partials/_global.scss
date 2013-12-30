@@ -175,23 +175,8 @@ header {
 	}
 }
 
-.flickr-grid {
-	color: #555555;
-	display: block;
-	position: relative;
-	padding-bottom: 30px;
-	min-height: 300px;
-
-	h2 {
-		margin: 0 0 22px 0;
-	}
-	
-	.loading-animation {
-		-webkit-animation-name: spin;
-		-moz-animation-name: spin;
-		-o-animation-name: spin;
-		animation-name: spin;
-
+.flickr-status {
+	.icon {
 		@include transform-origin( 50%, 55% );
 		
 		text-align: center;
@@ -208,7 +193,14 @@ header {
 		font-size: 64px;
 	}
 
-	.loading-message {
+	.animated {
+		-webkit-animation-name: spin;
+		-moz-animation-name: spin;
+		-o-animation-name: spin;
+		animation-name: spin;
+	}
+
+	.message {
 		display: block;
 		text-align: center;
 		display: block;
@@ -223,6 +215,18 @@ header {
 		color: $orange;
 		font-size: 32px;
 		padding: 100px 0 0 0;
+	}
+}
+
+.flickr-grid {
+	color: #555555;
+	display: block;
+	position: relative;
+	padding-bottom: 30px;
+	min-height: 300px;
+
+	h2 {
+		margin: 0 0 22px 0;
 	}
 
 	.flickr-search-box {
