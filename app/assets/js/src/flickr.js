@@ -78,13 +78,18 @@
                 });        
                 _.listen( elements.searchbox[i].getElementsByTagName('button'), 'click', function(e) {
                     _.prevent(e);
-                    _.search(this.parentNode.getElementsByTagName('input')[0].value);
+                    var txt = this.parentNode.getElementsByTagName('input')[0].value;
+                    if ( txt !== '' ) {
+                        _.search(txt);
+                    }
                 });
                 _.listen( elements.searchbox[i].getElementsByTagName('input'), 'keydown', function(e) {
                     e.which = e.which || e.keyCode;
                     if ( e.which == 13 ) {
                         _.prevent(e);
-                        _.search( e.target.value );
+                        if ( e.target.value !== '' ) {
+                            _.search( e.target.value );
+                        }
                     }
                 });
             }
@@ -94,13 +99,18 @@
                 });        
                 _.listen( elements.searchbox.getElementsByTagName('button'), 'click', function(e) {
                     _.prevent(e);
-                    _.search(this.parentNode.getElementsByTagName('input')[0].value);
+                    var txt = this.parentNode.getElementsByTagName('input')[0].value;
+                    if ( txt !== '' ) {
+                        _.search(txt);
+                    }
                 });
                 _.listen( elements.searchbox.getElementsByTagName('input'), 'keydown', function(e) {
                     e.which = e.which || e.keyCode;
                     if ( e.which == 13 ) {
                         _.prevent(e);
-                        _.search( e.target.value );
+                        if ( e.target.value !== '' ) {
+                            _.search( e.target.value );
+                        }
                     }
                 });
         }
