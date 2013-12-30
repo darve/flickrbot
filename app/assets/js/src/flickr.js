@@ -13,6 +13,7 @@
         elements = {},
         photos = [],
         loaded = false,
+        loading = false,
         searchterm,
         currentpage;
 
@@ -26,9 +27,12 @@
     // fed to the init function
     var settings = {
         photos_per_page: 21,
+        query_size: 300,
         lightbox: true
     };
 
+    // Create a public object that we will expose at the bottom of this 
+    // closure
     var FlickrBot = function() {
         return FlickrBot;
     };
@@ -40,6 +44,7 @@
     // 3. Set status to READY
     _.init = function(opts) {
 
+        // Put the user settings into our main settings object
         settings = _.extend(settings, opts);
 
         // Cache our elements
@@ -51,6 +56,8 @@
         elements.paging = _.select('.flickr-direction-paging');
         elements.status = _.select('.flickr-status');
 
+        // Disable the 'left' paging button, just in case the dev
+        // neglects to add it into the markup by default.
         _.addClass(elements.paging.querySelector('.left'), 'disabled');
 
         // Listen for lightbox clicks (closes the lightbox)
@@ -232,28 +239,39 @@
             }    
         }
 
-        var len = ( arr.length < settings.photos_per_page ? arr.length : settings.photos_per_page );
-    
-        for ( var i = 0; i < len; i++ ) {
-
-            // This is the array index we are looking at in our cached photos
-            var f = start + i;
-
-            // Build the URL for this photo
-            // URL format details can be found here: http://www.flickr.com/services/api/misc.urls.html
-            var url = 'http://farm' + arr[f].farm + '.staticflickr.com/' + arr[f].server + '/' + arr[f].id + '_' + arr[f].secret + '_';
-            
-            photos[i].image.src = url + ( i === 0 ? 'q' : 'q' ) + '.jpg';
-            photos[i].image.dataset.lightbox = url + 'b.jpg';
-            photos[i].image.className = 'loading';
-            _.removeClass( photos[i].wrapper, 'hidden' );
+        if ( arr.length < ( start + settings.photos_per_page ) && queries[searchterm].all === false ) {
+            _.search( searchterm, queries[searchterm].page );
+        } else {
+            var len = ( arr.length < settings.photos_per_page ? arr.length : settings.photos_per_page );
         
+            for ( var i = 0; i < len; i++ ) {
+
+                // This is the array index we are looking at in our cached photos
+                var f = start + i;
+
+                // Build the URL for this photo
+                // URL format details can be found here: http://www.flickr.com/services/api/misc.urls.html
+                var url = 'http://farm' + arr[f].farm + '.staticflickr.com/' + arr[f].server + '/' + arr[f].id + '_' + arr[f].secret + '_';
+                
+                photos[i].image.src = url + ( i === 0 ? 'q' : 'q' ) + '.jpg';
+                photos[i].image.dataset.lightbox = url + 'b.jpg';
+                photos[i].image.className = 'loading';
+                _.removeClass( photos[i].wrapper, 'hidden' );
+            
+            }
+
+            if ( loaded === false ) {
+                loaded = true;
+            }
+            console.log(len)
+            console.log(settings.photos_per_page);
+            if ( start === 0 && queries[searchterm].length >= ( start + settings.photos_per_page ) ) {
+                _.addClass(elements.paging, 'show');    
+            }            
         }
 
-        if ( loaded === false ) {
-            loaded = true;
-            _.addClass(elements.paging, 'show');
-        }
+        // Re-enable the UI
+        loading = false;
 
     };
 
@@ -268,24 +286,28 @@
 
         if ( typeof page === "undefined" ) {
             page = 1;
-        }
+            currentpage = 1;
+            elements.paging.getElementsByTagName('span')[0].innerHTML = ('Page ' + currentpage);
+            _.addClass(elements.paging.querySelector('.left'), 'disabled');
+
+            // Reset the src attributes of the grid images to show the
+            // loading animation
+            for ( var i = 0, l = settings.photos_per_page; i < l; i++ ) {
+                photos[i].image.src = 'assets/img/trans.png';
+            }
+        }   
 
         searchterm = keywords;
         currentpage = page;
 
-        // Reset the src attributes of the grid images to show the
-        // loading animation
-        for ( var i = 0, l = settings.photos_per_page; i < l; i++ ) {
-            photos[i].image.src = 'assets/img/trans.png';
-        }
-
+        // Update the UI in case it's looking a bit bleak
         _.addClass(elements.status.querySelector('.loading-animation'), 'animated');
         elements.status.querySelector('.message').innerHTML = 'Loading images';
 
         // Query Flickr for 300 images ( a large number, I know ) so we can
         // take care of caching etc behind the scenes.  Fewer XHR requests is 
         // best.
-        _.get( RESTurl + '&method=' + method + '&tags=' + keywords + '&page=' + page + '&format=json&nojsoncallback=1&per_page=300', function( res ){      
+        _.get( RESTurl + '&method=' + method + '&tags=' + keywords + '&page=' + page + '&format=json&nojsoncallback=1&per_page=' + settings.query_size, function( res ){      
 
             try {
                 response = JSON.parse( res.response );
@@ -294,13 +316,19 @@
                     _.removeClass(elements.status.querySelector('.loading-animation'), 'animated');
                     elements.status.querySelector('.message').innerHTML = 'Sorry, your search returned no results.';
                 } else {
-                    _.addClass(elements.paging, 'show');
                     queries[keywords] = response.photos.photo;
+                    queries[keywords].page = page;
+                    if ( response.photos.photo < settings.query_size) {
+                        queries[keywords].all = true;
+                    } else {
+                        queries[keywords].all = false;
+                    }
                     _.updateGrid( response.photos.photo );                        
                 }
             } catch(e) {
+                _.hideGrid();
                 _.removeClass(elements.status.querySelector('.loading-animation'), 'animated');
-                elements.status.querySelector('.message').innerHTML = "I'm terribly sorry, but an error has occurred.  Try refreshing your browser.";
+                elements.status.querySelector('.message').innerHTML = "I'm terribly sorry, but an error has occurred.";
             }
 
             return FlickrBot;
@@ -313,27 +341,31 @@
     // or it could be a number referencing a specific page. 
     _.page = function( page ) {
         
-        switch ( typeof page ) { 
-            case 'string':
-                if ( page === 'left' ) {
-                    if ( currentpage > 1 ) {
-                        _.updateGrid( queries[searchterm], settings.photos_per_page * (currentpage-1) );
-                        currentpage--;
-                        elements.paging.getElementsByTagName('span')[0].innerHTML = ('Page ' + currentpage);
-                        if ( currentpage === 1 ) {
-                            _.addClass(elements.paging.querySelector('.left'), 'disabled');
+        if ( loading === false ) {
+            switch ( typeof page ) { 
+                case 'string':
+                    if ( page === 'left' ) {
+                        if ( currentpage > 1 ) {
+                            _.updateGrid( queries[searchterm], settings.photos_per_page * (currentpage-1) );
+                            currentpage--;
+                            elements.paging.getElementsByTagName('span')[0].innerHTML = ('Page ' + currentpage);
+                            if ( currentpage === 1 ) {
+                                _.addClass(elements.paging.querySelector('.left'), 'disabled');
+                            }
                         }
+                    } else if ( page === 'right' ) {
+                        loading = true;
+                        console.log(settings.photos_per_page * (currentpage+1));
+                        _.updateGrid( queries[searchterm], settings.photos_per_page * (currentpage+1) );
+                        currentpage++;
+                        elements.paging.getElementsByTagName('span')[0].innerHTML = ('Page ' + currentpage);
+                        _.removeClass(elements.paging.querySelector('.left'), 'disabled');
                     }
-                } else if ( page === 'right' ) {
-                    _.updateGrid( queries[searchterm], settings.photos_per_page * (currentpage+1) );
-                    currentpage++;
-                    elements.paging.getElementsByTagName('span')[0].innerHTML = ('Page ' + currentpage);
-                    _.removeClass(elements.paging.querySelector('.left'), 'disabled');
-                }
-                break;
-            case 'number':
-                _.updateGrid( queries[searchterm], settings.photos_per_page * page );
-                break;
+                    break;
+                case 'number':
+                    _.updateGrid(queries[searchterm], (settings.photos_per_page * page));
+                    break;
+            }
         }
 
     };
@@ -410,15 +442,16 @@
         for (var prop in ext) {
             obj[prop] = (obj.hasOwnProperty(prop)) ? obj[prop] : ext[prop];
         }
-        
         return obj;
 
     };
 
 
     _.prevent = function(e) {
+
         e.preventDefault();
         e.stopPropagation(); 
+
     }
 
 
