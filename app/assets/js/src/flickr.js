@@ -269,22 +269,28 @@
             photos[i].image.src = 'assets/img/trans.png';
         }
 
+        _.addClass(elements.status.querySelector('.loading-animation'), 'animated');
+        elements.status.querySelector('.message').innerHTML = 'Loading images';
+
+        // Query Flickr for 300 images ( a large number, I know ) so we can
+        // take care of caching etc behind the scenes.  Fewer XHR requests is 
+        // best.
         _.get( RESTurl + '&method=' + method + '&tags=' + keywords + '&page=' + page + '&format=json&nojsoncallback=1&per_page=300', function( res ){      
 
             try {
                 response = JSON.parse( res.response );
                 if ( response.photos.photo.length === 0 ) {
-                    console.log(elements.status.querySelector('.loading-animation'));
+                    _.hideGrid();
                     _.removeClass(elements.status.querySelector('.loading-animation'), 'animated');
                     elements.status.querySelector('.message').innerHTML = 'Sorry, your search returned no results.';
                 } else {
+                    _.addClass(elements.paging, 'show');
                     queries[keywords] = response.photos.photo;
                     _.updateGrid( response.photos.photo );                        
                 }
             } catch(e) {
                 _.removeClass(elements.status.querySelector('.loading-animation'), 'animated');
                 elements.status.querySelector('.message').innerHTML = "I'm terribly sorry, but an error has occurred.  Try refreshing your browser.";
-                console.log('fail');
             }
 
             return FlickrBot;
@@ -321,6 +327,14 @@
         }
 
     };
+
+
+    _.hideGrid = function() {
+        for ( var i = 0; i < photos.length; i++ ) {
+            _.addClass(photos[i].wrapper, 'hidden');
+        }
+        _.removeClass(elements.paging, 'show');
+    }
 
 
     // document.querySelector is supported in IE8, so we're going to jolly well use that.
