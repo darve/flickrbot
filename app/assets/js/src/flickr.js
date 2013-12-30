@@ -12,8 +12,10 @@
         queries = {},
         elements = {},
         photos = [],
+        loaded = false,
         searchterm,
         currentpage;
+
 
     // Caching our API credentials for ease.
     var api_key = '5e0c3a5a074554ab8740d758e7384a3a',
@@ -23,7 +25,7 @@
     // Global settings for the flickr bot, overridable via parameters
     // fed to the init function
     var settings = {
-        photos_per_page: 40,
+        photos_per_page: 21,
         lightbox: true
     };
 
@@ -48,28 +50,27 @@
         elements.loadingbar = _.select('.flickr-loading-bar');
         elements.paging = _.select('.flickr-direction-paging');
 
-        // Listen for lightbox clicks ( closes the lightbox )
-        _.listen( elements.lightbox, 'click', function(e) {
+        _.addClass(elements.paging.querySelector('.left'), 'disabled');
+
+        // Listen for lightbox clicks (closes the lightbox)
+        _.listen(elements.lightbox, 'click', function(e) {
             elements.lightbox.className = '';
         });
 
-        console.log( elements.paging.querySelector('.left') );
-
-        _.listen( elements.paging.querySelector('.left'), 'click', function(e){
+        _.listen(elements.paging.querySelector('.left'), 'click', function(e){
             _.prevent(e);
             _.page('left');
         });
 
-        _.listen( elements.paging.querySelector('.right'), 'click', function(e){
+        _.listen(elements.paging.querySelector('.right'), 'click', function(e){
             _.prevent(e);
-            _.page('right');
-            console.log('GOING RIGHT');
+            _.page('right'); 
         });
 
         // This check was added in to allow the developer to have multiple flickr
         // search boxes on one page.  This is currently a pretty ugly implementation
         // thereof - @TODO: Reduce this to one block via a forEach polyfill.
-        if ( length in elements.searchbox && elements.searchbox.length > 1 && elements.searchbox.nodeType === undefined ) {
+        if (length in elements.searchbox && elements.searchbox.length > 1 && elements.searchbox.nodeType === undefined) {
             for ( var i = 0; i < elements.searchbox.length; i++ ) {
                 _.listen( elements.searchbox[i], 'submit', function(e) {
                     _.prevent(e); 
@@ -117,7 +118,7 @@
 
         function checkStatus() {
 
-            switch ( xhr.readyState ) {
+            switch (xhr.readyState) {
                 case 1:
                     _.addClass( elements.loadingbar, 'show' );
                     elements.loadingbar.style.width = '25%';
@@ -214,6 +215,10 @@
         
         if ( typeof start == 'undefined' ) {
             start = 0;
+        } else {
+            for ( var i = 0, l = settings.photos_per_page; i < l; i++ ) {
+                photos[i].image.src = 'assets/img/trans.png';
+            }    
         }
 
         var len = ( arr.length < settings.photos_per_page ? arr.length : settings.photos_per_page );
@@ -229,6 +234,11 @@
             photos[i].image.className = 'loading';
             _.removeClass( photos[i].wrapper, 'hidden' );
         
+        }
+
+        if ( loaded === false ) {
+            loaded = true;
+            _.addClass(elements.paging, 'show');
         }
 
     };
@@ -258,7 +268,6 @@
         _.get( RESTurl + '&method=' + method + '&tags=' + keywords + '&page=' + page + '&format=json&nojsoncallback=1&per_page=300', function( res ){      
             response = JSON.parse( res.response );
             queries[keywords] = response.photos.photo;
-            console.log(queries);
             _.updateGrid( response.photos.photo );
             return FlickrBot;
         });
@@ -276,12 +285,16 @@
                     if ( currentpage > 1 ) {
                         _.updateGrid( queries[searchterm], settings.photos_per_page * (currentpage-1) );
                         currentpage--;
-                        elements.paging.getElementsByTagName('span')[0].innerHTML = ('Page ' + currentpage);    
+                        elements.paging.getElementsByTagName('span')[0].innerHTML = ('Page ' + currentpage);
+                        if ( currentpage === 1 ) {
+                            _.addClass(elements.paging.querySelector('.left'), 'disabled');
+                        }
                     }
                 } else if ( page === 'right' ) {
                     _.updateGrid( queries[searchterm], settings.photos_per_page * (currentpage+1) );
                     currentpage++;
                     elements.paging.getElementsByTagName('span')[0].innerHTML = ('Page ' + currentpage);
+                    _.removeClass(elements.paging.querySelector('.left'), 'disabled');
                 }
                 break;
             case 'number':

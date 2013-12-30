@@ -32,11 +32,13 @@
 	<div id="wrapper" class="full-width">
 		<div class="flickr-direction-paging">
 			<a href="#" class="left icon-arrow-left"></a>
-			<span class="page f-regular f-uppercase">Page: 1</span>
+			<span class="page f-regular f-uppercase">Page 1</span>
 			<a href="#" class="right icon-arrow-right"></a>
 		</div>
 		<div class="flickr-grid full-width">
 			
+			<div class="loading-animation animated icon-repeat"></div><div class="loading-message f-regular f-uppercase">Loading images...</div>
+
 <!-- 			<div class="flickr-placeholder-wrapper">
 				<h2 class="f-bold f-uppercase">Start searching flickr now!</h2>
 				<form class="flickr-search-box">
@@ -51,7 +53,7 @@
 	<div class="clear"></div>
 
 	<footer>
-		<p class="f-light f-uppercase">Made by <a href="http://darve.co.uk/" target="_blank">Darve</a></p>
+		<p class="f-light f-uppercase"><a href="http://darve.co.uk/" title="DAAAAAAAAAARVE" target="_blank">Made by Darve</a></p>
 	</footer>
 	
 	<div id="flickr-lightbox">
@@ -69,7 +71,7 @@
 		// Pardon my use of window.onload here, it is only used to illustrate
 		// the flickrbot works
 		window.onload = function() {
-		    FlickrBot.init().search('kitten');
+		    FlickrBot.init().search('sunrise');
 		};
 
 	</script>
