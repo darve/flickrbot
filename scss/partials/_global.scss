@@ -176,6 +176,12 @@ header {
 }
 
 .flickr-status {
+	display: none;
+
+	&.show {
+		display: block;
+	}
+	
 	.icon {
 		@include transform-origin( 50%, 55% );
 		

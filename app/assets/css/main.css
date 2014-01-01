@@ -489,7 +489,15 @@ header .flickr-search-box {
   opacity: 1;
 }
 
-/* line 179, ../../../scss/partials/_global.scss */
+/* line 178, ../../../scss/partials/_global.scss */
+.flickr-status {
+  display: none;
+}
+/* line 181, ../../../scss/partials/_global.scss */
+.flickr-status.show {
+  display: block;
+}
+/* line 185, ../../../scss/partials/_global.scss */
 .flickr-status .icon {
   -webkit-transform-origin: 50% 55%;
   -moz-transform-origin: 50% 55%;
@@ -509,14 +517,14 @@ header .flickr-search-box {
   color: #f9672c;
   font-size: 64px;
 }
-/* line 196, ../../../scss/partials/_global.scss */
+/* line 202, ../../../scss/partials/_global.scss */
 .flickr-status .animated {
   -webkit-animation-name: spin;
   -moz-animation-name: spin;
   -o-animation-name: spin;
   animation-name: spin;
 }
-/* line 203, ../../../scss/partials/_global.scss */
+/* line 209, ../../../scss/partials/_global.scss */
 .flickr-status .message {
   display: block;
   text-align: center;
@@ -534,7 +542,7 @@ header .flickr-search-box {
   padding: 100px 0 0 0;
 }
 
-/* line 221, ../../../scss/partials/_global.scss */
+/* line 227, ../../../scss/partials/_global.scss */
 .flickr-grid {
   color: #555555;
   display: block;
@@ -542,25 +550,25 @@ header .flickr-search-box {
   padding-bottom: 30px;
   min-height: 300px;
 }
-/* line 228, ../../../scss/partials/_global.scss */
+/* line 234, ../../../scss/partials/_global.scss */
 .flickr-grid h2 {
   margin: 0 0 22px 0;
 }
-/* line 232, ../../../scss/partials/_global.scss */
+/* line 238, ../../../scss/partials/_global.scss */
 .flickr-grid .flickr-search-box {
   margin: 0 auto;
   border: 1px solid #7f8c8d;
   width: 300px;
   height: 42px;
 }
-/* line 240, ../../../scss/partials/_global.scss */
+/* line 246, ../../../scss/partials/_global.scss */
 .flickr-grid .item {
   width: 14.2857%;
   position: relative;
   float: left;
   cursor: pointer;
 }
-/* line 246, ../../../scss/partials/_global.scss */
+/* line 252, ../../../scss/partials/_global.scss */
 .flickr-grid .item:before {
   content: "";
   display: block;
@@ -569,7 +577,7 @@ header .flickr-search-box {
   background: #f9672c url(data:image/gif;base64,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) center center no-repeat;
   background-size: 32px auto;
 }
-/* line 255, ../../../scss/partials/_global.scss */
+/* line 261, ../../../scss/partials/_global.scss */
 .flickr-grid .item:after {
   content: "";
   pointer-events: none;
@@ -586,27 +594,27 @@ header .flickr-search-box {
   transition: background 0.1s ease-out;
   border: 2px solid white;
 }
-/* line 270, ../../../scss/partials/_global.scss */
+/* line 276, ../../../scss/partials/_global.scss */
 .flickr-grid .item:hover:after, .flickr-grid .item:focus:after, .flickr-grid .item:active:after {
   background: rgba(255, 255, 255, 0.3);
 }
-/* line 275, ../../../scss/partials/_global.scss */
+/* line 281, ../../../scss/partials/_global.scss */
 .flickr-grid .item.hidden {
   display: none;
 }
-/* line 280, ../../../scss/partials/_global.scss */
+/* line 286, ../../../scss/partials/_global.scss */
 .flickr-grid img {
   position: absolute;
   width: 100%;
   left: 0;
   top: 0;
 }
-/* line 286, ../../../scss/partials/_global.scss */
+/* line 292, ../../../scss/partials/_global.scss */
 .flickr-grid img.hidden {
   display: none;
 }
 
-/* line 292, ../../../scss/partials/_global.scss */
+/* line 298, ../../../scss/partials/_global.scss */
 #flickr-lightbox {
   position: fixed;
   width: 100%;
@@ -618,11 +626,11 @@ header .flickr-search-box {
   background: #000;
   background: rgba(0, 0, 0, 0.6);
 }
-/* line 304, ../../../scss/partials/_global.scss */
+/* line 310, ../../../scss/partials/_global.scss */
 #flickr-lightbox.visible {
   display: block;
 }
-/* line 307, ../../../scss/partials/_global.scss */
+/* line 313, ../../../scss/partials/_global.scss */
 #flickr-lightbox.visible:before {
   content: "\e60b";
   font-family: 'flickrbot';
@@ -654,12 +662,12 @@ header .flickr-search-box {
   -o-transition: color 0.1s ease-out, background 0.1s ease-out;
   transition: color 0.1s ease-out, background 0.1s ease-out;
 }
-/* line 326, ../../../scss/partials/_global.scss */
+/* line 332, ../../../scss/partials/_global.scss */
 #flickr-lightbox.visible:before:hover, #flickr-lightbox.visible:before:active, #flickr-lightbox.visible:before:focus {
   color: white;
   background: #f9672c;
 }
-/* line 333, ../../../scss/partials/_global.scss */
+/* line 339, ../../../scss/partials/_global.scss */
 #flickr-lightbox img {
   display: block;
   max-width: 80%;
@@ -680,7 +688,7 @@ header .flickr-search-box {
   border: 5px solid white;
 }
 
-/* line 356, ../../../scss/partials/_global.scss */
+/* line 362, ../../../scss/partials/_global.scss */
 footer {
   display: block;
   position: fixed;
@@ -693,12 +701,12 @@ footer {
   padding: 16px 0;
   margin: 0 auto;
 }
-/* line 371, ../../../scss/partials/_global.scss */
+/* line 377, ../../../scss/partials/_global.scss */
 footer p {
   text-align: center;
   font-size: 14px;
 }
-/* line 375, ../../../scss/partials/_global.scss */
+/* line 381, ../../../scss/partials/_global.scss */
 footer p a {
   color: #fff;
   text-decoration: none;
@@ -707,7 +715,7 @@ footer p a {
   -o-transition: color 0.1s ease-out;
   transition: color 0.1s ease-out;
 }
-/* line 380, ../../../scss/partials/_global.scss */
+/* line 386, ../../../scss/partials/_global.scss */
 footer p a:hover, footer p a:active, footer p a:focus {
   border: none;
   outline: none;
@@ -734,6 +742,16 @@ footer p a:hover, footer p a:active, footer p a:focus {
   /* line 21, ../../../scss/partials/_mobile.scss */
   .flickr-grid .item {
     width: 33.3333%;
+  }
+
+  /* line 26, ../../../scss/partials/_mobile.scss */
+  .flickr-status {
+    position: fixed;
+    width: 100%;
+    height: 190px;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
   }
 }
 @media screen and (min-width: 768px) and (max-width: 959px) {

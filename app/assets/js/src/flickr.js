@@ -59,6 +59,7 @@
         // Disable the 'left' paging button, just in case the dev
         // neglects to add it into the markup by default.
         _.addClass(elements.paging.querySelector('.left'), 'disabled');
+        _.addClass(elements.status, 'show');
 
         // Listen for lightbox clicks (closes the lightbox)
         _.listen(elements.lightbox, 'click', function(e) {
@@ -88,6 +89,8 @@
                     var txt = this.parentNode.getElementsByTagName('input')[0].value;
                     if ( txt !== '' ) {
                         _.search(txt);
+                        _.hideGrid();
+                        _.showStatus();
                     }
                 });
                 _.listen( elements.searchbox[i].getElementsByTagName('input'), 'keydown', function(e) {
@@ -96,6 +99,8 @@
                         _.prevent(e);
                         if ( e.target.value !== '' ) {
                             _.search( e.target.value );
+                            _.hideGrid();
+                            _.showStatus();
                         }
                     }
                 });
@@ -109,6 +114,7 @@
                     var txt = this.parentNode.getElementsByTagName('input')[0].value;
                     if ( txt !== '' ) {
                         _.search(txt);
+                        _.hideGrid();
                     }
                 });
                 _.listen( elements.searchbox.getElementsByTagName('input'), 'keydown', function(e) {
@@ -117,6 +123,7 @@
                         _.prevent(e);
                         if ( e.target.value !== '' ) {
                             _.search( e.target.value );
+                            _.hideGrid();
                         }
                     }
                 });
@@ -151,7 +158,7 @@
                 case 3:
                     elements.loadingbar.style.width = '75%';
                     return;
-                    break;s
+                    break;
 
                 // Request is good, lets do this
                 case 4:
@@ -195,6 +202,12 @@
                 _.addClass( this, 'loaded' );
             };
 
+            photos[i].image.onerror = function(e) {
+                e.preventDefault();
+                e.stopPropogation();
+                console.log('image load error');
+            }
+
             // Create a div element we can use to wrap the image, for layout purposes
             photos[i].wrapper = d.createElement('div');
             photos[i].wrapper.className = 'item hidden';
@@ -236,7 +249,6 @@
         }
 
         if ( queries[searchterm].length < ( start + settings.photos_per_page ) && queries[searchterm].all === false ) {
-            console.log('bastard');
             _.search( searchterm, queries[searchterm].page );
         } else {
             var len = ( arr.length < settings.photos_per_page ? arr.length : settings.photos_per_page );
@@ -250,12 +262,14 @@
                     // Build the URL for this photo
                     // URL format details can be found here: http://www.flickr.com/services/api/misc.urls.html
                     var url = 'http://farm' + arr[f].farm + '.staticflickr.com/' + arr[f].server + '/' + arr[f].id + '_' + arr[f].secret + '_';   
-                    photos[i].image.src = url + ( i === 0 ? 'q' : 'q' ) + '.jpg';
+                    photos[i].image.src = url + ( i === 0 ? 'q' : 'q' ) + '.jpg'; // this is redundant, was used for non-square images
                     photos[i].image.dataset.lightbox = url + 'b.jpg';
                     photos[i].image.className = 'loading';
                     _.removeClass( photos[i].wrapper, 'hidden' );
                 } else {
                     _.addClass( photos[i].wrapper, 'hidden' );
+                    // @TODO: optimise this so it only runs once
+                    _.addClass(elements.paging.querySelector('.right'), 'disabled');
                 }
             }
 
@@ -264,7 +278,7 @@
             }
             if ( start === 0 && queries[searchterm].length >= ( start + settings.photos_per_page ) ) {
                 _.addClass(elements.paging, 'show');    
-            }            
+            }
 
         // Re-enable the UI
         loading = false;
@@ -310,9 +324,11 @@
                     // This query gave us no results, hide the UI and prompt
                     // the user to search again
                     _.hideGrid();
+                    _.showStatus();
                     _.removeClass(elements.status.querySelector('.loading-animation'), 'animated');
                     elements.status.querySelector('.message').innerHTML = 'Sorry, your search returned no results.';
                 } else {
+                    _.hideStatus();
                     if ( page === 1 ) {
                         // Cache this set of search results
                         queries[keywords] = response.photos.photo;
@@ -334,6 +350,7 @@
                 }
             } catch(e) {
                 _.hideGrid();
+                _.showStatus();
                 _.removeClass(elements.status.querySelector('.loading-animation'), 'animated');
                 elements.status.querySelector('.message').innerHTML = "I'm terribly sorry, but an error has occurred.";
             }
@@ -352,10 +369,15 @@
             switch ( typeof page ) { 
                 case 'string':
                     if ( page === 'left' ) {
-                        if ( currentpage > 1 ) {
+                        if ( currentpage > 1 && !_.hasClass( elements.paging.querySelector('.left'), 'disabled') ) {
+                            
+                            loading = true;    
+                            
                             for ( var i = 0, l = settings.photos_per_page; i < l; i++ ) {
                                 photos[i].image.src = 'assets/img/trans.png';
                             }
+                            
+                            // The timeout is necessary so the images appear to be loading
                             setTimeout( function() {
                                 _.updateGrid( queries[searchterm], settings.photos_per_page * (currentpage-1) );
                                 currentpage--;
@@ -366,11 +388,15 @@
                             }, 25);
 
                         }
-                    } else if ( page === 'right' ) {
+                    } else if ( page === 'right' && !_.hasClass( elements.paging.querySelector('.right'), 'disabled') ) {
+
                         loading = true;
+                        
                         for ( var i = 0, l = settings.photos_per_page; i < l; i++ ) {
                             photos[i].image.src = 'assets/img/trans.png';
                         }
+
+                        // The timeout is necessary so the images appear to be loading
                         setTimeout( function(){
                             _.updateGrid( queries[searchterm], settings.photos_per_page * (currentpage+1) );
                             currentpage++;
@@ -380,6 +406,7 @@
 
                     }
                     break;
+
                 case 'number':
                     _.updateGrid(queries[searchterm], (settings.photos_per_page * page));
                     break;
@@ -388,13 +415,30 @@
 
     };
 
+    _.showStatus = function() {
+
+        if ( elements.status ) {
+            _.addClass( elements.status, 'show' );
+        }
+
+    };
+
+    _.hideStatus = function() {
+
+        if ( elements.status ) {
+            _.removeClass( elements.status, 'show' );
+        }
+
+    };
 
     _.hideGrid = function() {
+
         for ( var i = 0; i < photos.length; i++ ) {
             _.addClass(photos[i].wrapper, 'hidden');
         }
         _.removeClass(elements.paging, 'show');
-    }
+
+    };
 
 
     // document.querySelector is supported in IE8, so we're going to jolly well use that.
@@ -422,6 +466,14 @@
             // Fail
             return null;
         }
+
+    };
+
+
+    _.hasClass = function( el, cl ) {
+        console.log(el);
+        console.log(cl);
+        return el.className.indexOf(cl) === -1 ? false : true;
 
     };
 
@@ -504,6 +556,8 @@
     FlickrBot.select = _.select;
     FlickrBot.addClass = _.addClass;
     FlickrBot.removeClass = _.removeClass;
+    FlickrBot.queries = queries;
+    FlickrBot.hasClass = _.hasClass;
 
     w.FlickrBot = FlickrBot;
 
