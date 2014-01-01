@@ -6,7 +6,9 @@
 
 (function(w,d){
 
+
     'use strict';
+
 
     var _ = {},
         queries = {},
@@ -23,6 +25,7 @@
         secret = '80e37ce5945edef8',
         RESTurl = 'http://api.flickr.com/services/rest/?api_key=' + api_key;
 
+
     // Global settings for the flickr bot, overridable via parameters
     // fed to the init function
     var settings = {
@@ -30,6 +33,7 @@
         query_size: 300,
         lightbox: true
     };
+
 
     // Create a public object that we will expose at the bottom of this 
     // closure
@@ -66,6 +70,7 @@
             elements.lightbox.className = '';
         });
 
+        // Attach click listeners to the paging buttons
         _.listen(elements.paging.querySelector('.left'), 'click', function(e){
             _.prevent(e);
             _.page('left');
@@ -77,68 +82,46 @@
         });
 
         // This check was added in to allow the developer to have multiple flickr
-        // search boxes on one page.  This is currently a pretty ugly implementation
-        // thereof - @TODO: Reduce this to one block via a forEach polyfill.
+        // search boxes on one page. @TODO: Update the listen function to handle 
+        // variable numbers of elements.
         if (length in elements.searchbox && elements.searchbox.length > 1 && elements.searchbox.nodeType === undefined) {
-            for ( var i = 0; i < elements.searchbox.length; i++ ) {
-                _.listen( elements.searchbox[i], 'submit', function(e) {
-                    _.prevent(e); 
-                });        
-                _.listen( elements.searchbox[i].getElementsByTagName('button'), 'click', function(e) {
-                    _.prevent(e);
-                    var txt = this.parentNode.getElementsByTagName('input')[0].value;
-                    if ( txt !== '' ) {
-                        _.search(txt);
-                        this.blur(); // hide the keyboard on mobile devices
-                        _.hideGrid();
-                        _.showStatus();
-                    }
-                });
-                _.listen( elements.searchbox[i].getElementsByTagName('input'), 'keydown', function(e) {
-                    e.which = e.which || e.keyCode;
-                    if ( e.which == 13 ) {
-                        _.prevent(e);
-                        if ( e.target.value !== '' ) {
-                            _.search( e.target.value );
-                            this.blur(); // hide the keyboard on mobile devices
-                            _.hideGrid();
-                            _.showStatus();
-                        }
-                    }
-                });
-                _.listen( elements.searchbox[i].getElementsByTagName('input'), 'click', function(e) {
-                    this.value = '';
-                });
-            }
+            var len = elements.searchbox.length,
+                elems = elements.searchbox;
         } else {
-                _.listen( elements.searchbox, 'submit', function(e) {
-                    _.prevent(e); 
-                });        
-                _.listen( elements.searchbox.getElementsByTagName('button'), 'click', function(e) {
+            var len = 1,
+                elems = [];
+            elems.push(elements.searchbox);
+        }
+
+        for ( var i = 0; i < len; i++ ) {
+            _.listen( elems[i], 'submit', function(e) {
+                _.prevent(e); 
+            });        
+            _.listen( elems[i].getElementsByTagName('button'), 'click', function(e) {
+                _.prevent(e);
+                var txt = this.parentNode.getElementsByTagName('input')[0].value;
+                if ( txt !== '' ) {
+                    _.search(txt);
+                    this.blur(); // hide the keyboard on mobile devices
+                    _.hideGrid();
+                    _.showStatus();
+                }
+            });
+            _.listen( elems[i].getElementsByTagName('input'), 'keydown', function(e) {
+                e.which = e.which || e.keyCode;
+                if ( e.which == 13 ) {
                     _.prevent(e);
-                    var txt = this.parentNode.getElementsByTagName('input')[0].value;
-                    if ( txt !== '' ) {
+                    if ( e.target.value !== '' ) {
+                        _.search( e.target.value );
                         this.blur(); // hide the keyboard on mobile devices
-                        _.search(txt);
                         _.hideGrid();
                         _.showStatus();
                     }
-                });
-                _.listen( elements.searchbox.getElementsByTagName('input'), 'keydown', function(e) {
-                    e.which = e.which || e.keyCode;
-                    if ( e.which == 13 ) {
-                        _.prevent(e);
-                        if ( e.target.value !== '' ) {
-                            this.blur(); // hide the keyboard on mobile devices
-                            _.search( e.target.value );
-                            _.hideGrid();
-                            _.showStatus();
-                        }
-                    }
-                });
-                _.listen( elements.searchbox.getElementsByTagName('input'), 'click', function(e) {
-                    this.value = '';
-                });
+                }
+            });
+            _.listen( elems[i].getElementsByTagName('input'), 'click', function(e) {
+                this.value = '';
+            });
         }
 
         _.buildGrid();
@@ -151,7 +134,6 @@
     _.get = function(url, callback) {
     
         var xhr = new XMLHttpRequest();
-        // elements.loadingbar.className = 'show';
 
         function checkStatus() {
 
@@ -338,20 +320,29 @@
                     _.removeClass(elements.status.querySelector('.loading-animation'), 'animated');
                     elements.status.querySelector('.message').innerHTML = 'Sorry, your search returned no results.';
                 } else {
+                    
                     _.hideStatus();
                     if ( page === 1 ) {
                         // Cache this set of search results
                         queries[keywords] = response.photos.photo;
                     } else {
                         // Add this new set of search results to our cached search results
+                        // (appends the new array to the old one).
                         Array.prototype.push.apply(queries[keywords], response.photos.photo);
                     }
+
+                    // Store the current page of flickr search results we are on ( different
+                    // to the site paging ).
                     queries[keywords].page = page; 
+                    
+                    // Determine if there are any more flickr results out there,
+                    // or whether we have them all.
                     if ( response.photos.photo.length < settings.query_size) {
                         queries[keywords].all = true;
                     } else {
                         queries[keywords].all = false;
                     }
+
                     if ( page === 1 ) {
                         _.updateGrid( response.photos.photo );                            
                     } else {
@@ -425,6 +416,7 @@
 
     };
 
+
     _.showStatus = function() {
 
         if ( elements.status ) {
@@ -433,6 +425,7 @@
 
     };
 
+
     _.hideStatus = function() {
 
         if ( elements.status ) {
@@ -440,6 +433,7 @@
         }
 
     };
+
 
     _.hideGrid = function() {
 
@@ -479,10 +473,10 @@
 
     };
 
-
+    // Utility function that returns true if the given element has
+    // the given class, false if not
     _.hasClass = function( el, cl ) {
-        console.log(el);
-        console.log(cl);
+
         return el.className.indexOf(cl) === -1 ? false : true;
 
     };
@@ -491,6 +485,7 @@
     // Utility function to add a class to a DOM element
     _.addClass = function( el, cl ) {
         
+        // Check if the element has the class already
         if ( el.className.indexOf(cl) === -1 ) {
             el.className += (el.className.length === 0 ? '' :  ' ') + cl;
         }
@@ -502,6 +497,8 @@
     // Utility function to remove a class from a DOM element
     _.removeClass = function( el, cl ) {
 
+        // Establish if the class in question is at the start or end of
+        // the className, or whether it is the only class, then remove it.
         if ( el.className.indexOf( cl ) !== -1 ) {
             if ( el.className.indexOf( cl + ' ' ) !== -1 ) {
                 el.className = el.className.replace( cl + ' ', '' );         
@@ -527,6 +524,7 @@
     };
 
 
+    // Utility function that prevent the default response to an event
     _.prevent = function(e) {
 
         e.preventDefault();
@@ -561,14 +559,9 @@
     // Expose public methods
     FlickrBot.init = _.init;
     FlickrBot.search = _.search;
-    FlickrBot.page = _.page;
-    FlickrBot.get = _.get;
-    FlickrBot.select = _.select;
-    FlickrBot.addClass = _.addClass;
-    FlickrBot.removeClass = _.removeClass;
-    FlickrBot.queries = queries;
-    FlickrBot.hasClass = _.hasClass;
+
 
     w.FlickrBot = FlickrBot;
+
 
 })(window, document);
