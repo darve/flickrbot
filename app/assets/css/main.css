@@ -753,6 +753,20 @@ footer p a:hover, footer p a:active, footer p a:focus {
     bottom: 0;
     margin: auto 0;
   }
+
+  /* line 39, ../../../scss/partials/_mobile.scss */
+  #flickr-lightbox.visible:before {
+    right: 13px;
+    top: 13px;
+    width: 31px;
+    height: 31px;
+    font-size: 31px;
+  }
+
+  /* line 50, ../../../scss/partials/_mobile.scss */
+  .flickr-status .message {
+    font-size: 22px;
+  }
 }
 @media screen and (min-width: 768px) and (max-width: 959px) {
   /* 	Tablet styles, yeah?

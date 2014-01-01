@@ -31,3 +31,23 @@ header {
 	bottom: 0;
 	margin: auto 0;
 }
+
+
+
+#flickr-lightbox {
+	&.visible {
+		&:before {
+			right: 13px;
+			top: 13px;
+			width: 31px;
+			height: 31px;
+			font-size: 31px;
+		}
+	}
+}
+
+.flickr-status {
+	.message {
+		font-size: 22px;
+	}
+}

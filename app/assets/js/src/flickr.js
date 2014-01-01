@@ -89,6 +89,7 @@
                     var txt = this.parentNode.getElementsByTagName('input')[0].value;
                     if ( txt !== '' ) {
                         _.search(txt);
+                        this.blur(); // hide the keyboard on mobile devices
                         _.hideGrid();
                         _.showStatus();
                     }
@@ -99,10 +100,14 @@
                         _.prevent(e);
                         if ( e.target.value !== '' ) {
                             _.search( e.target.value );
+                            this.blur(); // hide the keyboard on mobile devices
                             _.hideGrid();
                             _.showStatus();
                         }
                     }
+                });
+                _.listen( elements.searchbox[i].getElementsByTagName('input'), 'click', function(e) {
+                    this.value = '';
                 });
             }
         } else {
@@ -113,8 +118,10 @@
                     _.prevent(e);
                     var txt = this.parentNode.getElementsByTagName('input')[0].value;
                     if ( txt !== '' ) {
+                        this.blur(); // hide the keyboard on mobile devices
                         _.search(txt);
                         _.hideGrid();
+                        _.showStatus();
                     }
                 });
                 _.listen( elements.searchbox.getElementsByTagName('input'), 'keydown', function(e) {
@@ -122,10 +129,15 @@
                     if ( e.which == 13 ) {
                         _.prevent(e);
                         if ( e.target.value !== '' ) {
+                            this.blur(); // hide the keyboard on mobile devices
                             _.search( e.target.value );
                             _.hideGrid();
+                            _.showStatus();
                         }
                     }
+                });
+                _.listen( elements.searchbox.getElementsByTagName('input'), 'click', function(e) {
+                    this.value = '';
                 });
         }
 
@@ -203,9 +215,7 @@
             };
 
             photos[i].image.onerror = function(e) {
-                e.preventDefault();
-                e.stopPropogation();
-                console.log('image load error');
+                _.addClass(this.parentNode, 'hidden');
             }
 
             // Create a div element we can use to wrap the image, for layout purposes
@@ -301,7 +311,7 @@
             currentpage = 1;
             elements.paging.getElementsByTagName('span')[0].innerHTML = ('Page ' + currentpage);
             _.addClass(elements.paging.querySelector('.left'), 'disabled');
-
+            _.removeClass(elements.paging.querySelector('.right'), 'disabled');
             searchterm = keywords;
             currentpage = page;
         } else {
