@@ -1,0 +1,737 @@
+/* line 17, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+/* line 22, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html {
+  line-height: 1;
+}
+
+/* line 24, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 26, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 28, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* line 30, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q, blockquote {
+  quotes: none;
+}
+/* line 103, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+/* line 32, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+a img {
+  border: none;
+}
+
+/* line 116, ../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+  display: block;
+}
+
+/* 	Base styles, yeah?
+/* ======================================= */
+/* line 7, ../../../scss/partials/_base.scss */
+.clear {
+  clear: both;
+  height: 0px;
+  overflow: hidden;
+}
+
+/* 	Fonts and that, yeah?
+/* ======================================= */
+/* line 5, ../../../scss/partials/_typography.scss */
+.f-thin {
+  font-family: 'Lato', sans-serif;
+  font-weight: 100;
+}
+
+/* line 9, ../../../scss/partials/_typography.scss */
+.f-light {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+}
+
+/* line 13, ../../../scss/partials/_typography.scss */
+.f-regular {
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+}
+
+/* line 17, ../../../scss/partials/_typography.scss */
+.f-bold {
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+}
+
+/* line 21, ../../../scss/partials/_typography.scss */
+.f-extrabold {
+  font-family: 'Lato', sans-serif;
+  font-weight: 900;
+}
+
+/* line 25, ../../../scss/partials/_typography.scss */
+.f-uppercase {
+  text-transform: uppercase;
+}
+
+/* line 30, ../../../scss/partials/_typography.scss */
+h1 {
+  font-size: 32px;
+  text-align: center;
+}
+
+/* line 35, ../../../scss/partials/_typography.scss */
+h2 {
+  font-size: 28px;
+  text-align: center;
+}
+
+/* 	Icon font(s), yeah?
+/* ======================================= */
+@font-face {
+  font-family: 'flickrbot';
+  src: url("/assets/fonts/flickrbot.eot");
+}
+
+@font-face {
+  font-family: 'flickrbot';
+  src: url(data:application/x-font-ttf;charset=utf-8;base64,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) format("truetype"), url(data:application/font-woff;charset=utf-8;base64,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) format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* line 30, ../../../scss/partials/_icons.scss */
+[class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: 'flickrbot';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* line 45, ../../../scss/partials/_icons.scss */
+.icon-minus:before {
+  content: "\e600";
+}
+
+/* line 48, ../../../scss/partials/_icons.scss */
+.icon-plus:before {
+  content: "\e601";
+}
+
+/* line 51, ../../../scss/partials/_icons.scss */
+.icon-mouse:before {
+  content: "\e602";
+}
+
+/* line 54, ../../../scss/partials/_icons.scss */
+.icon-arrow-right:before {
+  content: "\e603";
+}
+
+/* line 57, ../../../scss/partials/_icons.scss */
+.icon-arrow-up:before {
+  content: "\e604";
+}
+
+/* line 60, ../../../scss/partials/_icons.scss */
+.icon-arrow-down:before {
+  content: "\e605";
+}
+
+/* line 63, ../../../scss/partials/_icons.scss */
+.icon-arrow-left:before {
+  content: "\e606";
+}
+
+/* line 66, ../../../scss/partials/_icons.scss */
+.icon-resize-enlarge:before {
+  content: "\e607";
+}
+
+/* line 69, ../../../scss/partials/_icons.scss */
+.icon-resize-shrink:before {
+  content: "\e608";
+}
+
+/* line 72, ../../../scss/partials/_icons.scss */
+.icon-facebook:before {
+  content: "\e609";
+}
+
+/* line 75, ../../../scss/partials/_icons.scss */
+.icon-twitter:before {
+  content: "\e60a";
+}
+
+/* line 78, ../../../scss/partials/_icons.scss */
+.icon-cross:before {
+  content: "\e60b";
+}
+
+/* line 81, ../../../scss/partials/_icons.scss */
+.icon-search:before {
+  content: "\e60c";
+}
+
+/* line 84, ../../../scss/partials/_icons.scss */
+.icon-repeat:before {
+  content: "\e60d";
+}
+
+/*  CSS Animations, yeah?
+/* ======================================= */
+/* line 5, ../../../scss/partials/_animation.scss */
+.animated {
+  -webkit-animation-duration: 1s;
+  -moz-animation-duration: 1s;
+  -o-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+  -o-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+  -moz-animation-timing-function: linear;
+  -o-animation-timing-function: linear;
+  animation-timing-function: linear;
+  -webkit-animation-fill-mode: both;
+  -moz-animation-fill-mode: both;
+  -o-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+@-webkit-keyframes spin {
+  /* line 25, ../../../scss/partials/_animation.scss */
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+
+  /* line 26, ../../../scss/partials/_animation.scss */
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@-moz-keyframes spin {
+  /* line 30, ../../../scss/partials/_animation.scss */
+  from {
+    -moz-transform: rotate(0deg);
+  }
+
+  /* line 31, ../../../scss/partials/_animation.scss */
+  to {
+    -moz-transform: rotate(360deg);
+  }
+}
+
+@-o-keyframes spin {
+  /* line 35, ../../../scss/partials/_animation.scss */
+  from {
+    -o-transform: rotate(0deg);
+  }
+
+  /* line 36, ../../../scss/partials/_animation.scss */
+  to {
+    -o-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  /* line 39, ../../../scss/partials/_animation.scss */
+  from {
+    transform: rotate(0deg);
+  }
+
+  /* line 40, ../../../scss/partials/_animation.scss */
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 	Global styles, yeah?
+/* ======================================= */
+/* line 5, ../../../scss/partials/_global.scss */
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* line 9, ../../../scss/partials/_global.scss */
+body, html {
+  position: relative;
+  display: block;
+  min-height: 100%;
+}
+
+/* line 15, ../../../scss/partials/_global.scss */
+#wrapper {
+  display: block;
+  min-height: 400px;
+  padding-bottom: 70px;
+}
+
+/*	Core Elements
+/* ======================================= */
+/* line 24, ../../../scss/partials/_global.scss */
+.flickr-loading-bar {
+  display: block;
+  position: fixed;
+  left: 0px;
+  top: -6px;
+  width: 0%;
+  height: 6px;
+  background: #2ecc71;
+  z-index: 999;
+  -webkit-transition: width 0.3s ease-out, top 0.1s ease-out;
+  -webkit-transition-delay: 0s, 0.3s;
+  -moz-transition: width 0.3s ease-out, top 0.1s ease-out 0.3s;
+  -o-transition: width 0.3s ease-out, top 0.1s ease-out 0.3s;
+  transition: width 0.3s ease-out, top 0.1s ease-out 0.3s;
+}
+/* line 35, ../../../scss/partials/_global.scss */
+.flickr-loading-bar.show {
+  top: 0px;
+}
+
+/* line 40, ../../../scss/partials/_global.scss */
+.flickr-search-box {
+  position: relative;
+  display: block;
+  width: 220px;
+  height: 32px;
+}
+/* line 46, ../../../scss/partials/_global.scss */
+.flickr-search-box input[type=text] {
+  border: none;
+  outline: none;
+  padding: 4px;
+  color: #333;
+  width: 100%;
+  height: 100%;
+  display: block;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -ms-border-radius: 0px;
+  -o-border-radius: 0px;
+  border-radius: 0px;
+}
+/* line 57, ../../../scss/partials/_global.scss */
+.flickr-search-box button {
+  -webkit-transition: color 0.1s ease-out;
+  -moz-transition: color 0.1s ease-out;
+  -o-transition: color 0.1s ease-out;
+  transition: color 0.1s ease-out;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -ms-border-radius: 0px;
+  -o-border-radius: 0px;
+  border-radius: 0px;
+  display: block;
+  padding: 0;
+  margin: auto 0;
+  position: absolute;
+  right: 8px;
+  top: 0px;
+  bottom: 0px;
+  color: #7f8c8d;
+  font-size: 18px;
+  height: 18px;
+  outline: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+/* line 78, ../../../scss/partials/_global.scss */
+.flickr-search-box button:hover, .flickr-search-box button:active, .flickr-search-box button:focus {
+  color: #f9672c;
+}
+
+/* line 84, ../../../scss/partials/_global.scss */
+.full-width {
+  display: block;
+  position: relative;
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+/* line 94, ../../../scss/partials/_global.scss */
+header {
+  display: block;
+  position: relative;
+  width: 100%;
+  background: #f9672c;
+  color: #fff;
+  padding: 30px 0;
+  margin: 0px auto 30px auto;
+}
+/* line 106, ../../../scss/partials/_global.scss */
+header .flickr-search-box {
+  position: absolute;
+  right: 20px;
+  top: 0px;
+  bottom: 0px;
+  margin: auto;
+}
+
+/* line 116, ../../../scss/partials/_global.scss */
+.flickr-masthead {
+  height: 320px;
+  margin: 0 0 30px 0;
+  overflow: hidden;
+}
+/* line 122, ../../../scss/partials/_global.scss */
+.flickr-masthead img {
+  display: block;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+/* line 137, ../../../scss/partials/_global.scss */
+.flickr-direction-paging {
+  display: block;
+  max-width: 280px;
+  height: 36px;
+  margin: 0 auto 20px auto;
+  text-align: center;
+  position: relative;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+  -webkit-transition: all 1s ease-out;
+  -moz-transition: all 1s ease-out;
+  -o-transition: all 1s ease-out;
+  transition: all 1s ease-out;
+}
+/* line 147, ../../../scss/partials/_global.scss */
+.flickr-direction-paging a, .flickr-direction-paging span {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  zoom: 1;
+  *display: inline;
+  width: 30%;
+  color: #f9672c;
+}
+/* line 153, ../../../scss/partials/_global.scss */
+.flickr-direction-paging span {
+  position: relative;
+  top: -4px;
+}
+/* line 158, ../../../scss/partials/_global.scss */
+.flickr-direction-paging a {
+  font-size: 36px;
+  text-decoration: none;
+  -webkit-transition: color 0.1s ease-out;
+  -moz-transition: color 0.1s ease-out;
+  -o-transition: color 0.1s ease-out;
+  transition: color 0.1s ease-out;
+}
+/* line 163, ../../../scss/partials/_global.scss */
+.flickr-direction-paging a:hover, .flickr-direction-paging a:active, .flickr-direction-paging a:focus {
+  color: #ba3905;
+}
+/* line 167, ../../../scss/partials/_global.scss */
+.flickr-direction-paging a.disabled {
+  color: #eeeeee;
+  cursor: default;
+}
+/* line 173, ../../../scss/partials/_global.scss */
+.flickr-direction-paging.show {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
+/* line 178, ../../../scss/partials/_global.scss */
+.flickr-status {
+  display: none;
+}
+/* line 181, ../../../scss/partials/_global.scss */
+.flickr-status.show {
+  display: block;
+}
+/* line 185, ../../../scss/partials/_global.scss */
+.flickr-status .icon {
+  -webkit-transform-origin: 50% 55%;
+  -moz-transform-origin: 50% 55%;
+  -ms-transform-origin: 50% 55%;
+  -o-transform-origin: 50% 55%;
+  transform-origin: 50% 55%;
+  text-align: center;
+  display: block;
+  width: 64px;
+  height: 59px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  color: #f9672c;
+  font-size: 64px;
+}
+/* line 202, ../../../scss/partials/_global.scss */
+.flickr-status .animated {
+  -webkit-animation-name: spin;
+  -moz-animation-name: spin;
+  -o-animation-name: spin;
+  animation-name: spin;
+}
+/* line 209, ../../../scss/partials/_global.scss */
+.flickr-status .message {
+  display: block;
+  text-align: center;
+  display: block;
+  width: 100%;
+  height: 64px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  color: #f9672c;
+  font-size: 32px;
+  padding: 100px 0 0 0;
+}
+
+/* line 227, ../../../scss/partials/_global.scss */
+.flickr-grid {
+  color: #555555;
+  display: block;
+  position: relative;
+  padding-bottom: 30px;
+  min-height: 300px;
+}
+/* line 234, ../../../scss/partials/_global.scss */
+.flickr-grid h2 {
+  margin: 0 0 22px 0;
+}
+/* line 238, ../../../scss/partials/_global.scss */
+.flickr-grid .flickr-search-box {
+  margin: 0 auto;
+  border: 1px solid #7f8c8d;
+  width: 300px;
+  height: 42px;
+}
+/* line 246, ../../../scss/partials/_global.scss */
+.flickr-grid .item {
+  width: 14.2857%;
+  position: relative;
+  float: left;
+  cursor: pointer;
+}
+/* line 252, ../../../scss/partials/_global.scss */
+.flickr-grid .item:before {
+  content: "";
+  display: block;
+  padding-top: 100%;
+  /* initial ratio of 1:1*/
+  background: #f9672c url(data:image/gif;base64,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) center center no-repeat;
+  background-size: 32px auto;
+}
+/* line 261, ../../../scss/partials/_global.scss */
+.flickr-grid .item:after {
+  content: "";
+  pointer-events: none;
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: transparent;
+  -webkit-transition: background 0.1s ease-out;
+  -moz-transition: background 0.1s ease-out;
+  -o-transition: background 0.1s ease-out;
+  transition: background 0.1s ease-out;
+  border: 2px solid white;
+}
+/* line 276, ../../../scss/partials/_global.scss */
+.flickr-grid .item:hover:after, .flickr-grid .item:focus:after, .flickr-grid .item:active:after {
+  background: rgba(255, 255, 255, 0.3);
+}
+/* line 281, ../../../scss/partials/_global.scss */
+.flickr-grid .item.hidden {
+  display: none;
+}
+/* line 286, ../../../scss/partials/_global.scss */
+.flickr-grid img {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+/* line 292, ../../../scss/partials/_global.scss */
+.flickr-grid img.hidden {
+  display: none;
+}
+
+/* line 298, ../../../scss/partials/_global.scss */
+#flickr-lightbox {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  display: none;
+  cursor: pointer;
+  background: #000;
+  background: rgba(0, 0, 0, 0.6);
+}
+/* line 310, ../../../scss/partials/_global.scss */
+#flickr-lightbox.visible {
+  display: block;
+}
+/* line 313, ../../../scss/partials/_global.scss */
+#flickr-lightbox.visible:before {
+  content: "\e60b";
+  font-family: 'flickrbot';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: block;
+  position: absolute;
+  right: 30px;
+  top: 30px;
+  width: 52px;
+  height: 52px;
+  color: #f9672c;
+  font-size: 52px;
+  text-align: center;
+  background: white;
+  -webkit-border-radius: 500px;
+  -moz-border-radius: 500px;
+  -ms-border-radius: 500px;
+  -o-border-radius: 500px;
+  border-radius: 500px;
+  -webkit-transition: color 0.1s ease-out, background 0.1s ease-out;
+  -moz-transition: color 0.1s ease-out, background 0.1s ease-out;
+  -o-transition: color 0.1s ease-out, background 0.1s ease-out;
+  transition: color 0.1s ease-out, background 0.1s ease-out;
+}
+/* line 332, ../../../scss/partials/_global.scss */
+#flickr-lightbox.visible:before:hover, #flickr-lightbox.visible:before:active, #flickr-lightbox.visible:before:focus {
+  color: white;
+  background: #f9672c;
+}
+/* line 339, ../../../scss/partials/_global.scss */
+#flickr-lightbox img {
+  display: block;
+  max-width: 80%;
+  max-height: 80%;
+  min-width: 60px;
+  min-height: 60px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  -webkit-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4);
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4);
+  background: #f9672c url('../img/loader.gif?1387058518') center center no-repeat;
+  background-size: 32px auto;
+  border: 5px solid white;
+}
+
+/* line 362, ../../../scss/partials/_global.scss */
+footer {
+  display: block;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  background: #f9672c;
+  color: #fff;
+  padding: 16px 0;
+  margin: 0 auto;
+}
+/* line 377, ../../../scss/partials/_global.scss */
+footer p {
+  text-align: center;
+  font-size: 14px;
+}
+/* line 381, ../../../scss/partials/_global.scss */
+footer p a {
+  color: #fff;
+  text-decoration: none;
+  -webkit-transition: color 0.1s ease-out;
+  -moz-transition: color 0.1s ease-out;
+  -o-transition: color 0.1s ease-out;
+  transition: color 0.1s ease-out;
+}
+/* line 386, ../../../scss/partials/_global.scss */
+footer p a:hover, footer p a:active, footer p a:focus {
+  border: none;
+  outline: none;
+  text-decoration: none;
+  color: black;
+}
+
+/* 	Desktop styles, yeah?
+/* ======================================= */
+/* ========================
+     _                                        
+ ___| |__   __ _ _ __ ___   ___   ___ ___ ___ 
+/ __| '_ \ / _` | '_ ` _ \ / _ \ / __/ __/ __|
+\__ \ | | | (_| | | | | | |  __/| (__\__ \__ \
+|___/_| |_|\__,_|_| |_| |_|\___(_)___|___/___/
+                                              
+/* ======================== */
+/* 	Shameful styles, yeah?
+/* ======================================= */

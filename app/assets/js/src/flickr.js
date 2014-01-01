@@ -35,8 +35,8 @@
     };
 
 
-    // Create a public object that we will expose at the bottom of this 
-    // closure
+    // Create a public object that we will expose to the window at the 
+    // bottom of this closure
     var FlickrBot = function() {
         return FlickrBot;
     };
@@ -99,10 +99,10 @@
             });        
             _.listen( elems[i].getElementsByTagName('button'), 'click', function(e) {
                 _.prevent(e);
-                var txt = this.parentNode.getElementsByTagName('input')[0].value;
+                var txt = e.srcElement.parentNode.getElementsByTagName('input')[0].value;
                 if ( txt !== '' ) {
                     _.search(txt);
-                    this.blur(); // hide the keyboard on mobile devices
+                    e.srcElement.blur(); // hide the keyboard on mobile devices
                     _.hideGrid();
                     _.showStatus();
                 }
@@ -111,17 +111,23 @@
                 e.which = e.which || e.keyCode;
                 if ( e.which == 13 ) {
                     _.prevent(e);
-                    if ( e.target.value !== '' ) {
-                        _.search( e.target.value );
-                        this.blur(); // hide the keyboard on mobile devices
+                    if ( e.srcElement.value !== '' ) {
+                        _.search( e.srcElement.value );
+                        e.srcElement.blur(); // hide the keyboard on mobile devices
                         _.hideGrid();
                         _.showStatus();
                     }
                 }
             });
             _.listen( elems[i].getElementsByTagName('input'), 'click', function(e) {
-                this.value = '';
+                e.srcElement.value = '';
             });
+        }
+
+        // Cheeky flicker to trick IE8 into showing the icon font properly.
+        if ( _.hasClass( d.getElementsByTagName('html')[0], 'lt-ie9' ) ) {
+            d.body.style['display'] = 'none';
+            d.body.style['display'] = '';
         }
 
         _.buildGrid();
@@ -132,9 +138,9 @@
     // Basic ajax GET function.  
     // @TODO: replace the callback with a promise
     _.get = function(url, callback) {
-    
-        var xhr = new XMLHttpRequest();
 
+        // This is the callback to our ajax request, which decides what to do
+        // based on its ready status. Used for styling the green loading bar.
         function checkStatus() {
 
             switch (xhr.readyState) {
@@ -158,7 +164,7 @@
                 case 4:
                     elements.loadingbar.style.width = '100%';
                     _.removeClass( elements.loadingbar, 'show' );
-                    callback(xhr);
+                    callback(xhr.responseText);
                     break;
             }
 
@@ -167,13 +173,26 @@
                 console.log('The request was made, but it was not good.');
                 return;
             }
-        
         }
 
-        xhr.onreadystatechange = checkStatus;
-        xhr.open('GET', url, true);
-        xhr.send('');
-
+        if ( typeof XDomainRequest === "undefined" ) {
+            // This browser is more modern than IE8, create a regular XMLHttpRequest
+            // and fire it off.
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = checkStatus;
+            xhr.open('GET', url, true);
+            xhr.send('');
+        } else {
+            // Because this is a cross-domain request, IE8 will have a fit if
+            // we try and use a regular XMLHttpRequest, so we use an XDomainRequest.
+            // No progress report for IE.
+            var xdr = new XDomainRequest();
+            xdr.onload = function(res) { 
+                callback(xdr.responseText); 
+            };
+            xdr.open('GET', url);
+            xdr.send('');    
+        }
     };
 
 
@@ -213,7 +232,7 @@
                 _.listen( photos[i].image, 'click', function(e) {
                     var img = new Image();
                     img.className = 'lightbox';
-                    img.src = this.dataset.lightbox;
+                    img.src = e.srcElement.getAttribute('data-lightbox');
                     
                     elements.lightbox.innerHTML = '';
                     elements.lightbox.appendChild(img);
@@ -227,7 +246,6 @@
                 elements.gridClear.className = 'clear';
                 elements.grid.appendChild(elements.gridClear);
             }
-
         }
 
     }
@@ -250,12 +268,13 @@
                 // This is the array index we are looking at in our cached photos
                 var f = start + i;
 
-                if ( arr[f] ) {
+                if ( typeof arr[f] !== "undefined" ) {
+                    
                     // Build the URL for this photo
                     // URL format details can be found here: http://www.flickr.com/services/api/misc.urls.html
                     var url = 'http://farm' + arr[f].farm + '.staticflickr.com/' + arr[f].server + '/' + arr[f].id + '_' + arr[f].secret + '_';   
                     photos[i].image.src = url + ( i === 0 ? 'q' : 'q' ) + '.jpg'; // this is redundant, was used for non-square images
-                    photos[i].image.dataset.lightbox = url + 'b.jpg';
+                    photos[i].image.setAttribute('data-lightbox', url + 'b.jpg');
                     photos[i].image.className = 'loading';
                     _.removeClass( photos[i].wrapper, 'hidden' );
                 } else {
@@ -274,7 +293,6 @@
 
         // Re-enable the UI
         loading = false;
-
         }
 
     };
@@ -309,9 +327,10 @@
         // take care of caching etc behind the scenes.  Fewer XHR requests is 
         // best.
         _.get( RESTurl + '&method=' + method + '&tags=' + keywords + '&page=' + page + '&format=json&nojsoncallback=1&per_page=' + settings.query_size, function( res ){      
-
+            
             try {
-                response = JSON.parse( res.response );
+                response = JSON.parse( res );
+
                 if ( response.photos.photo.length === 0 ) {
                     // This query gave us no results, hide the UI and prompt
                     // the user to search again
@@ -527,8 +546,13 @@
     // Utility function that prevent the default response to an event
     _.prevent = function(e) {
 
-        e.preventDefault();
-        e.stopPropagation(); 
+        if (e.preventDefault) {
+            e.preventDefault();
+        } else if (e.stopPropagation) {
+            e.stopPropagation();
+        } else {
+            e.returnValue = false;
+        }
 
     }
 
@@ -549,7 +573,14 @@
             };
         } else if (w.attachEvent) {
             return function(el, ev, fn) {
-                w.attachEvent('on' + ev, fn, false);
+                if ( length in el ) {
+                    for ( var i = 0; i < el.length; i++ ) {
+                        el[i].attachEvent('on' + ev, fn);
+                    }
+                } else {
+                    el.attachEvent('on' + ev, fn);
+                }
+                
             };
         }
 
