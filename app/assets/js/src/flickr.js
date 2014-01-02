@@ -104,7 +104,7 @@
                 var target = e.srcElement || e.target;
                 var txt = target.parentNode.getElementsByTagName('input')[0].value;
                 if ( txt !== '' ) {
-                    _.search(txt)
+                    _.search(txt);
                     target.blur(); // hide the keyboard on mobile devices
                     _.hideGrid();
                     _.showStatus();
@@ -251,7 +251,7 @@
             }
         }
 
-    }
+    };
 
 
     // This is responsible for updating the images in the grid
