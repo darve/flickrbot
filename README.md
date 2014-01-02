@@ -1,7 +1,7 @@
 flickrbot
 =========
 
-Simple Flickr search and browse module ( no dependencies )
+Simple Flickr search and browse module.  No dependencies.  Simply include the <code>flickrbot.min.js</code> file in your page and run the <code>init</code> function as described below.
 
 ## Usage
 
@@ -39,21 +39,5 @@ You can see an example of how these elements are put together in the file <code>
 
 - The UI uses classes for showing and hiding certain elements, which is nice because it avoids any inline styling, however it would likely make it easier to use if developers don't need to worry about what class does what.
 - A lot of the UI isn't fully optimised in IE8
-
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
+- The paging currently only has right and left buttons.  Could be useful to have numbered paging.
+- Currently no deep-linking to images, would be good to use some basic hash routing.  Potientially problematic because images can get taken down from Flickr so dead links etc.
