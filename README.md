@@ -3,11 +3,57 @@ flickrbot
 
 Simple Flickr search and browse module ( no dependencies )
 
-How to use it
-=========
+## Usage
 
-The Flickr Bot consists of the following elements:
+####  API
 
-- The grid
-- The paging
-- The search box ( there can be several of these if you so desire )
+The Flickr Bot has a very simple API, consisting of two functions.
+
+    FlickrBot.init(options)
+ 
+Configurable options:
+
+- lightbox: boolean,
+- photos_\_per\_page: integer ( defaults to 21 ),
+- query\_size: integer ( defaults to 300 )
+
+This function initialises and returns the FlickrBot. 
+
+    FlickrBot.search( searchterm )
+
+This function returns the FlickrBot, queries Flickr for photos that match the string given to it, and updates the UI with the new photos.
+
+#### Markup
+The FlickrBot consists of the following elements:
+
+- The grid ( the grid of Flickr photos )
+- The paging ( UI elements that allow the user to traverse the array of Flickr photos )
+- The search box ( The user input their search keywords here to search Flickr. There can be more than one of these if required ).
+ -The status ( UI element used to display appropriate messages
+- The lightbox ( Wrapper element used to show enlarged images when the user clicks on a photo in the grid ).
+- The loading bar ( UI element used to show the status of a Flickr query ).
+
+You can see an example of how these elements are put together in the file <code>app/index.html</code>.
+
+## Future enhancements / Known bugs
+
+- The UI uses classes for showing and hiding certain elements, which is nice because it avoids any inline styling, however it would likely make it easier to use if developers don't need to worry about what class does what.
+- A lot of the UI isn't fully optimised in IE8
+
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
