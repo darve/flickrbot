@@ -101,28 +101,31 @@
             });        
             _.listen( elems[i].getElementsByTagName('button'), 'click', function(e) {
                 _.prevent(e);
-                var txt = e.srcElement.parentNode.getElementsByTagName('input')[0].value;
+                var target = e.srcElement || e.target;
+                var txt = target.parentNode.getElementsByTagName('input')[0].value;
                 if ( txt !== '' ) {
-                    _.search(txt);
-                    e.srcElement.blur(); // hide the keyboard on mobile devices
+                    _.search(txt)
+                    target.blur(); // hide the keyboard on mobile devices
                     _.hideGrid();
                     _.showStatus();
                 }
             });
             _.listen( elems[i].getElementsByTagName('input'), 'keydown', function(e) {
-                e.which = e.which || e.keyCode;
-                if ( e.which == 13 ) {
+                var target = e.srcElement || e.target;
+                var txt = e.which || e.keyCode;
+                if ( txt == 13 ) {
                     _.prevent(e);
-                    if ( e.srcElement.value !== '' ) {
-                        _.search( e.srcElement.value );
-                        e.srcElement.blur(); // hide the keyboard on mobile devices
+                    if ( target.value !== '' ) {
+                        _.search( target.value );
+                        target.blur(); // hide the keyboard on mobile devices
                         _.hideGrid();
                         _.showStatus();
                     }
                 }
             });
             _.listen( elems[i].getElementsByTagName('input'), 'click', function(e) {
-                e.srcElement.value = '';
+                var target = e.srcElement || e.target;
+                target.value = '';
             });
         }
 
@@ -229,9 +232,10 @@
             // Note: this is only needed if the lightbox setting is true
             if ( settings.lightbox === true ) {
                 _.listen( photos[i].image, 'click', function(e) {
+                    var target = e.srcElement || e.target;
                     var img = new Image();
                     img.className = 'lightbox';
-                    img.src = e.srcElement.getAttribute('data-lightbox');
+                    img.src = target.getAttribute('data-lightbox');
                     
                     elements.lightbox.innerHTML = '';
                     elements.lightbox.appendChild(img);
