@@ -1,7 +1,7 @@
 Dave's Flickr Bot
 =========
 
-Simple Flickr search and browse module.  No dependencies.  Simply include the <code>flickrbot.min.js</code> file in your page and run the <code>init</code> function as described below.
+Simple Flickr search and browse module.  No dependencies.  Simply include <code>flickrbot.min.js</code> from <code>app/assets/js/prod/</code> in your page and run the <code>init</code> function as described below.
 
 ## Usage
 
@@ -14,7 +14,7 @@ The Flickr Bot has a very simple API, consisting of two functions.
 Configurable options:
 
 - lightbox: boolean ( defaults to true, represents whether the photos show larger versions in a lightbox when clicked ),
-- photos_\_per\_page: integer ( defaults to 21, represents the number of images per page of results ),
+- photos\_per\_page: integer ( defaults to 21, represents the number of images per page of results ),
 - query\_size: integer ( defaults to 300, represents how many photos we query Flickr for at a time, a higher number is obviously a longer loading time but is more efficient with ajax requests )
 
 This function initialises and returns the FlickrBot. 
