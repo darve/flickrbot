@@ -48,6 +48,9 @@
     // 3. Set status to READY
     _.init = function(opts) {
 
+        var len,
+            elems = [];
+
         // Put the user settings into our main settings object
         settings = _.extend(settings, opts);
 
@@ -85,11 +88,10 @@
         // search boxes on one page. @TODO: Update the listen function to handle 
         // variable numbers of elements.
         if (length in elements.searchbox && elements.searchbox.length > 1 && elements.searchbox.nodeType === undefined) {
-            var len = elements.searchbox.length,
+            len = elements.searchbox.length,
                 elems = elements.searchbox;
         } else {
-            var len = 1,
-                elems = [];
+            len = 1;
             elems.push(elements.searchbox);
         }
 
@@ -126,8 +128,8 @@
 
         // Cheeky flicker to trick IE8 into showing the icon font properly.
         if ( _.hasClass( d.getElementsByTagName('html')[0], 'lt-ie9' ) ) {
-            d.body.style['display'] = 'none';
-            d.body.style['display'] = '';
+            d.body.style.display = 'none';
+            d.body.style.display = '';
         }
 
         _.buildGrid();
@@ -148,17 +150,14 @@
                     _.addClass( elements.loadingbar, 'show' );
                     elements.loadingbar.style.width = '25%';
                     return;
-                    break;
 
                 case 2:
                     elements.loadingbar.style.width = '50%';
                     return;
-                    break;
 
                 case 3:
                     elements.loadingbar.style.width = '75%';
                     return;
-                    break;
 
                 // Request is good, lets do this
                 case 4:
@@ -217,7 +216,7 @@
 
             photos[i].image.onerror = function(e) {
                 _.addClass(this.parentNode, 'hidden');
-            }
+            };
 
             // Create a div element we can use to wrap the image, for layout purposes
             photos[i].wrapper = d.createElement('div');
@@ -554,7 +553,7 @@
             e.returnValue = false;
         }
 
-    }
+    };
 
 
     // Adds an event listener - returns the appropriate function depending 

@@ -10,7 +10,7 @@ module.exports = function(grunt) {
     /* Linting!
     /* ========================= */
 		jshint: {
-      files: ['app/assets/js/*.js', 'app/assets/js/src/*.js', '!app/assets/js/prod/main.min.js'],
+      files: ['app/assets/js/*.js', 'app/assets/js/src/*.js', '!app/assets/js/prod/flickrbot.min.js'],
       options: {
         globals: {
           jQuery: true,
@@ -19,7 +19,7 @@ module.exports = function(grunt) {
           document: true
         }
       },
-      afterconcat: ['app/assets/js/*.js', 'app/assets/js/src/*.js', '!app/assets/js/prod/main.min.js']
+      afterconcat: ['app/assets/js/*.js', 'app/assets/js/src/*.js', '!app/assets/js/prod/flickrbot.min.js']
     },
 
     
@@ -31,7 +31,7 @@ module.exports = function(grunt) {
       },
       dist: {
         src: ['app/assets/js/*.js', 'app/assets/js/src/*.js'],
-        dest: 'app/assets/js/prod/main.min.js'
+        dest: 'app/assets/js/prod/flickrbot.min.js'
       }
     },
 
@@ -44,7 +44,7 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'app/assets/js/prod/main.min.js': ['<%= concat.dist.dest %>']
+          'app/assets/js/prod/flickrbot.min.js': ['<%= concat.dist.dest %>']
         }
       }
     },
@@ -70,7 +70,7 @@ module.exports = function(grunt) {
     		files: ['scss/**/*.scss'], 
     		tasks: ['compass:dist']
     	},
-      files: ['app/assets/js/*.js', 'app/assets/js/src/*.js', '!app/assets/js/prod/main.min.js'],
+      files: ['app/assets/js/*.js', 'app/assets/js/src/*.js', '!app/assets/js/prod/flickrbot.min.js'],
       tasks: ['jshint']
     }
   });
