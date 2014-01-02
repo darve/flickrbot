@@ -1,4 +1,4 @@
-flickrbot
+Dave's Flickr Bot
 =========
 
 Simple Flickr search and browse module.  No dependencies.  Simply include the <code>flickrbot.min.js</code> file in your page and run the <code>init</code> function as described below.
