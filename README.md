@@ -21,7 +21,8 @@ This function initialises and returns the FlickrBot.
 
     FlickrBot.search( searchterm )
 
-This function returns the FlickrBot, queries Flickr for photos that match the string given to it, and updates the UI with the new photos.
+This function returns the FlickrBot, queries Flickr for photos that match the string given to it, and updates the UI with the new photos. 
+
 
 #### Markup
 The FlickrBot consists of the following elements:
@@ -45,17 +46,18 @@ You can see an example of how these elements are put together in the file <code>
 
 ## My approach
 
-My basic approach to building a module of this sort can be summed up in the following steps
-- Analyse the objectives and design documents, and draw up a rough list of all of the seperate components / elements and their responsibilities.
-- Choose a framework / any libraries that will likely be useful in order to meet the objectives.
-- Sketch out the UI to see how these components are represented.
-- Write the javscript skeleton ( i.e. empty functions forming the components established earlier ) and some semantic markup representative of the UI sketch.
-- Do some basic styling so any scripting progress can be actually seen and used.
+My basic approach to building a module of this sort can be summed up in the following steps:
 
-- Code
-- Test
-- Repeat
+1. Analyse the objectives and design documents, and draw up a rough list of all of the seperate components / elements and their responsibilities.
+2. Choose a framework / any libraries that will likely be useful in order to meet the objectives.
+3. Sketch out the UI to see how these components are represented.
+4. Write the javscript skeleton ( i.e. empty functions forming the components established earlier ) and some semantic markup representative of the UI sketch.
+5. Do some basic styling so any scripting progress can be actually seen and used.
+6. Flesh out the functions and update the mark-up accordingly.
+7. Style the finished UI.
+8. Test
+9. Publish
 
 I ran into a few hurdles when developing this module; namely the stand-off between optimising it for fewer ajax calls, and creating a simple paging mechanism for the results returned from Flickr.  When I started building it, I had a lot of the functionality grouped into one place ( the search function ), but as development went on I made the decision to seperate it into seperate functions ( Build Grid, Update Grid, Search ).
 
-I included a couple of helper functions in the module for things like selecting dom elements, adding event listeners and for basic class manipulation.
+I included a couple of helper functions in the module for things like selecting dom elements, adding event listeners and for basic class manipulation.  Were I to build something like this in a production environment I would likely try and integrate it into whatever selector engine was being used ( if there was one ).
