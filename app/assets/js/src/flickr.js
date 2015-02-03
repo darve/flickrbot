@@ -21,8 +21,8 @@
 
 
     // Caching our API credentials for ease.
-    var api_key = '5e0c3a5a074554ab8740d758e7384a3a',
-        secret = '80e37ce5945edef8',
+    var api_key = "47b33fbb5623d3646665082d21f82dfd",
+        secret = "d2163270bb327228",
         RESTurl = 'http://api.flickr.com/services/rest/?api_key=' + api_key;
 
 
